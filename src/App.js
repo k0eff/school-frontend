@@ -1,15 +1,21 @@
 import React, { Fragment } from "react";
 import Menu from "./components/menu";
-import ContentWrapper from "./components/contentWrapper/contentWrapper";
+import ContentWrapper from "./components/wrappers/contentWrapper";
+import MainWrapper from "./components/wrappers/mainWrapper";
+
+import Blank from "./pages/blank/blank";
+
 import "./sbadmin2-min.css";
 
 function App() {
   return (
     <Fragment>
-      <div id="wrapper">
+      <MainWrapper>
         <Menu />
-        <ContentWrapper />
-      </div>
+        <ContentWrapper>
+          <Blank />
+        </ContentWrapper>
+      </MainWrapper>
     </Fragment>
   );
 }

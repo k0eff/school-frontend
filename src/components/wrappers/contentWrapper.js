@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function contentWrapper() {
+export default function contentWrapper(props) {
   return (
     <div id="content-wrapper" className="d-flex flex-column">
       {/* <!-- Main Content --> */}
@@ -22,13 +22,8 @@ export default function contentWrapper() {
           </ul>
         </nav>
         {/* <!-- End of Topbar --> */}
-
         {/* <!-- Begin Page Content --> */}
-        <div className="container-fluid">
-          {/* <!-- Page Heading --> */}
-          <h1 className="h3 mb-4 text-gray-800">Blank Page</h1>
-        </div>
-        {/* <!-- /.container-fluid --> */}
+        {props.children}
       </div>
       {/* <!-- End of Main Content --> */}
 
