@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function contentWrapper(props) {
+export default function topBarWrapper(props) {
   return (
     <div id="content-wrapper" className="d-flex flex-column">
       {/* <!-- Main Content --> */}

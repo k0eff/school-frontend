@@ -1,14 +1,10 @@
-import React, { Fragment } from "react";
+import React from "react";
+import MainBodyContainerWrapper from "../../components/wrappers/mainBodyContainerWrapper";
 
-export default function blank() {
+export default function Blank() {
   return (
-    <Fragment>
-      <div className="container-fluid">
-        {/* <!-- Page Heading --> */}
-        <h1 className="h3 mb-4 text-gray-800">Blank Page</h1>
-      </div>
-      {/* <!-- /.container-fluid --> */}
-      fsdfs
-    </Fragment>
+    <MainBodyContainerWrapper pageTitle="Празно">
+      <p class="m-4">Празна страница</p>
+    </MainBodyContainerWrapper>
   );
 }

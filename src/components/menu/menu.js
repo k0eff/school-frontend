@@ -1,5 +1,7 @@
 import React, { Fragment } from "react";
 
+import { Link } from "react-router-dom";
+
 export default function menu() {
   return (
     <Fragment>
@@ -16,23 +18,31 @@ export default function menu() {
             <i className="fas fa-laugh-wink" />
           </div>
           <div className="sidebar-brand-text mx-3">
-            SB Admin <sup>2</sup>
+            Училище <sup />
           </div>
         </a>
 
         {/* <!-- Divider --> */}
         <hr className="sidebar-divider my-0" />
 
+        {/* #############  */}
+
+        {/* ############# Links */}
+
         {/* <!-- Nav Item - Tables --> */}
         <li className="nav-item">
-          <a className="nav-link" href="tables.html">
+          <Link className="nav-link" to="/subjects">
             <i className="fas fa-fw fa-table" />
-            <span>Tables</span>
-          </a>
+            <span>Предмети</span>
+          </Link>
         </li>
 
         {/* <!-- Divider --> */}
         <hr className="sidebar-divider d-none d-md-block" />
+
+        {/* ############# Links END */}
+
+        {/* #############  */}
       </ul>
     </Fragment>
   );

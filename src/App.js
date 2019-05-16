@@ -1,22 +1,31 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Menu from "./components/menu";
-import ContentWrapper from "./components/wrappers/contentWrapper";
+import TopBarWrapper from "./components/wrappers/topBarWrapper";
 import MainWrapper from "./components/wrappers/mainWrapper";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
 
-import Blank from "./pages/blank/blank";
+//pages
+import Dashboard from "./pages/dashboard/Dashboard";
+import Blank from "./pages/blank/Blank";
+import Subjects from "./pages/Subjects/Subjects";
 
 import "./sbadmin2-min.css";
 
 function App() {
   return (
-    <Fragment>
+    <BrowserRouter>
       <MainWrapper>
         <Menu />
-        <ContentWrapper>
-          <Blank />
-        </ContentWrapper>
+
+        <TopBarWrapper>
+          <Switch>
+            <Route exact path="/" component={Dashboard} />
+            <Route path="/blank" component={Blank} />
+            <Route path="/subjects" component={Subjects} />
+          </Switch>
+        </TopBarWrapper>
       </MainWrapper>
-    </Fragment>
+    </BrowserRouter>
   );
 }
 
