@@ -5,40 +5,37 @@ import SpinnerInline from "../Spinner/spinner-inline";
 class ActionButton extends React.Component {
   spinnerElement = null;
 
-  state = {
-    displaySpinner: false
-  };
-  onClickHandler = () => {
-    this.setState({ displaySpinner: true }); //only show it, do not hide it on the second click
-    if (this.props.onClick) this.props.onClick();
-  };
-
   render() {
+    let iconElement,
+      btnClassName = "";
+    let { loading, success } = this.props;
+
+    if (!loading && success) {
+      // if the button has finished loading and the action is successful
+      iconElement = <i className="fas fa-check" />;
+      btnClassName = "btn btn-icon-split btn-success";
+    } else if (loading) {
+      iconElement = <SpinnerInline width="22px" />;
+      btnClassName = "btn btn-icon-split btn-primary";
+    } else {
+      // standard state
+      iconElement = <i className="fas fa-flag" />;
+      btnClassName = "btn btn-icon-split btn-primary";
+    }
+
     return (
       <div className="form-group">
         <button
-          className={
-            this.props.className
-              ? this.props.className
-              : "btn btn-primary btn-icon-split"
-          }
+          className={btnClassName}
           id={this.props.id}
-          onClick={() => {
-            this.onClickHandler();
+          onClick={e => {
+            return this.props.onClick ? this.props.onClick() : "";
           }}
           type={this.props.type}
         >
-          <span className="icon text-white-50">
-            <i className="fas fa-flag" />
-          </span>
+          <span className="icon text-white-50">{iconElement}</span>
           <span className="text">{this.props.text}</span>
         </button>
-
-        {(() => {
-          if (this.state.displaySpinner) {
-            return <SpinnerInline width="32px" className="ml-2" />;
-          }
-        })()}
       </div>
     );
   }

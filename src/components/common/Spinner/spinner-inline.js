@@ -1,5 +1,5 @@
 import React from "react";
-import spinner from "./spinner.gif";
+import spinner from "./spinner-2.gif";
 import PropTypes from "prop-types";
 
 export default function SpinnerInline(props) {

@@ -71,6 +71,8 @@ export const getParamValues = paramId => dispatch => {
     });
 };
 export const addValue = ({ paramName, value, descr }) => dispatch => {
+  dispatch(loading());
+
   axios
     .post("/api/params/valueByParamName", { paramName, value, descr })
     .then(res => {

@@ -7,6 +7,8 @@ import {
   finishSignal
 } from "../../actions/KeyToValueActions";
 
+import isEmpty from "../../utils/is-empty";
+
 // load custom components
 import MainBodyContainerWrapper from "../../components/wrappers/mainBodyContainerWrapper";
 import MainWrapper from "../../components/wrappers/mainWrapper";
@@ -29,8 +31,16 @@ class AddKeyValuePairs extends Component {
     this.state = {
       paramValue: "",
       paramDescr: "",
-      keyValue: {}
+      keyValue: {},
+      paramName: ""
     };
+
+    let { paramName } = this.props.match.params;
+    if (paramName !== undefined && !paramName.match(/[A-Za-z0-9]/)) {
+      this.state.paramName = "default";
+    } else {
+      this.state.paramName = paramName;
+    }
   }
 
   handleChange(e) {
@@ -41,16 +51,7 @@ class AddKeyValuePairs extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    let paramName = "";
-    let { paramValue, paramDescr } = this.state;
-    if (
-      this.props.match.params.paramName !== undefined &&
-      !this.props.match.params.paramName.match(/[A-Za-z0-9]/)
-    ) {
-      paramName = "default";
-    } else {
-      paramName = this.props.match.params.paramName;
-    }
+    let { paramValue, paramDescr, paramName } = this.state;
 
     let data = {
       paramName,
@@ -62,7 +63,16 @@ class AddKeyValuePairs extends Component {
   }
 
   render() {
-    let error = this.props.keyValue.error;
+    let { error, values, loading } = this.props.keyValue;
+    let success = false;
+    if (!isEmpty(values)) {
+      // New value has been added
+      success = true;
+      setTimeout(() => {
+        window.location.assign("/KeyValue/list/" + this.state.paramName);
+      }, 300);
+    }
+
     return (
       <MainWrapper>
         <Menu />
@@ -98,7 +108,12 @@ class AddKeyValuePairs extends Component {
                     />
                   </div>
                   <div className="form-element">
-                    <ActionButton text="Запиши" type="submit" />
+                    <ActionButton
+                      text="Запиши"
+                      type="submit"
+                      loading={loading}
+                      success={success}
+                    />
                   </div>
                 </div>
               </form>
