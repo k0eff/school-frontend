@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "0.18.0",
     "babel-loader": "8.0.5",
+    "http-proxy-middleware": "0.19.1",
     "prop-types": "15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -35,5 +36,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:4444"
+  "proxy": "http://localhost:4444/"
 }

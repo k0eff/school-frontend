@@ -31,7 +31,7 @@ export default function menu() {
 
         {/* <!-- Nav Item - Tables --> */}
         <li className="nav-item">
-          <Link className="nav-link" to="/subjects">
+          <Link className="nav-link" to="/kvp/id/Subjects">
             <i className="fas fa-fw fa-table" />
             <span>Предмети</span>
           </Link>
