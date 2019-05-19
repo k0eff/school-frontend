@@ -4,7 +4,9 @@ import {
   KEYVALUE_LOADING,
   KEYVALUE_GET_PARAM_VALUES,
   KEYVALUE_START_SIGNAL,
-  KEYVALUE_FINISH_SIGNAL
+  KEYVALUE_FINISH_SIGNAL,
+  KEYVALUE_ADD_ERROR,
+  KEYVALUE_ADD_SUCCESS
 } from "./actionTypes";
 import isEmpty from "../utils/is-empty";
 
@@ -65,6 +67,22 @@ export const getParamValues = paramId => dispatch => {
       dispatch({
         type: KEYVALUE_ERR,
         payload: e.response.data
+      });
+    });
+};
+export const AddValue = ({ paramId, value, descr }) => dispatch => {
+  axios
+    .post("/api/valueByParamName", { paramId, value, descr })
+    .catch(e =>
+      dispatch({
+        type: KEYVALUE_ADD_ERROR,
+        payload: e.response.data
+      })
+    )
+    .then(res => {
+      dispatch({
+        type: KEYVALUE_ADD_SUCCESS,
+        payload: res.data
       });
     });
 };

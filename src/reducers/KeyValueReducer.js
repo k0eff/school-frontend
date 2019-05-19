@@ -4,7 +4,9 @@ import {
   KEYVALUE_LOADING,
   KEYVALUE_GET_PARAM_VALUES,
   KEYVALUE_FINISH_SIGNAL,
-  KEYVALUE_START_SIGNAL
+  KEYVALUE_START_SIGNAL,
+  KEYVALUE_ADD_SUCCESS,
+  KEYVALUE_ADD_ERROR
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -51,7 +53,19 @@ export default function(state = initialState, action) {
         loading: false,
         signal: true
       };
+    case KEYVALUE_ADD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        values: action.payload
+      };
 
+    case KEYVALUE_ADD_ERROR:
+      return {
+        ...state,
+        loading: false,
+        errors: action.payload
+      };
     default:
       return initialState;
   }
