@@ -67,7 +67,7 @@ class KeyValuePairs extends Component {
 
         <TopBarWrapper>
           <MainBodyContainerWrapper pageTitle="Предмети">
-            <p className="m-4">Тук настройте всички изучавани предмети</p>
+            <p className="m-4">Списък с добавени предмети</p>
           </MainBodyContainerWrapper>
 
           <div className="card shadow mb-4">

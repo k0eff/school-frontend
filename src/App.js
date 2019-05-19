@@ -6,7 +6,8 @@ import { Switch, Route, BrowserRouter } from "react-router-dom";
 //pages
 import Dashboard from "./pages/dashboard/Dashboard";
 import Blank from "./pages/blank/Blank";
-import KeyValuePairs from "./pages/Subjects/KeyValuePairs";
+import ListKeyValuePairs from "./pages/KeyValue/ListKeyValuePairs";
+import AddKeyValuePairs from "./pages/KeyValue/AddKeyValuePairs";
 
 import "./sbadmin2-min.css";
 
@@ -17,7 +18,11 @@ function App() {
         <Switch>
           <Route exact path="/" component={Dashboard} />
           <Route path="/blank" component={Blank} />
-          <Route path="/KeyValue/list/:paramName" component={KeyValuePairs} />
+          <Route
+            path="/KeyValue/list/:paramName"
+            component={ListKeyValuePairs}
+          />
+          <Route path="/KeyValue/add/:paramName" component={AddKeyValuePairs} />
         </Switch>
       </BrowserRouter>
     </Provider>
