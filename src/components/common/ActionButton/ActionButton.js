@@ -10,7 +10,7 @@ class ActionButton extends React.Component {
   };
   onClickHandler = () => {
     this.setState({ displaySpinner: true }); //only show it, do not hide it on the second click
-    // this.props.onClick();
+    if (this.props.onClick) this.props.onClick();
   };
 
   render() {
@@ -26,6 +26,7 @@ class ActionButton extends React.Component {
           onClick={() => {
             this.onClickHandler();
           }}
+          type={this.props.type}
         >
           <span className="icon text-white-50">
             <i className="fas fa-flag" />
@@ -45,7 +46,8 @@ class ActionButton extends React.Component {
 
 ActionButton.propTypes = {
   text: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+  type: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   id: PropTypes.string,
   className: PropTypes.string
 };
