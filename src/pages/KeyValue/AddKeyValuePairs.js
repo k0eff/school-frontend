@@ -1,5 +1,11 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import {
+  addValue,
+  startSignal,
+  finishSignal
+} from "../../actions/KeyToValueActions";
 
 // load custom components
 import MainBodyContainerWrapper from "../../components/wrappers/mainBodyContainerWrapper";
@@ -10,18 +16,20 @@ import TopBarWrapper from "../../components/wrappers/topBarWrapper";
 import ActionButton from "../../components/common/ActionButton/ActionButton";
 import CommonInput from "../../components/common/CommonInput/CommonInput";
 import CommonTextArea from "../../components/common/CommonTextArea/CommonTextArea";
-import SpinnerInline from "../../components/common/Spinner/spinner-inline";
 
-export default class AddKeyValuePairs extends Component {
+class AddKeyValuePairs extends Component {
   static propTypes = {
-    prop: PropTypes
+    addValue: PropTypes.func.isRequired,
+    startSignal: PropTypes.func.isRequired,
+    finishSignal: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      ParamValue: "",
-      ParamDescr: ""
+      paramValue: "",
+      paramDescr: "",
+      keyValue: {}
     };
   }
 
@@ -31,7 +39,30 @@ export default class AddKeyValuePairs extends Component {
     });
   }
 
+  handleSubmit(e) {
+    e.preventDefault();
+    let paramName = "";
+    let { paramValue, paramDescr } = this.state;
+    if (
+      this.props.match.params.paramName !== undefined &&
+      !this.props.match.params.paramName.match(/[A-Za-z0-9]/)
+    ) {
+      paramName = "default";
+    } else {
+      paramName = this.props.match.params.paramName;
+    }
+
+    let data = {
+      paramName,
+      value: paramValue,
+      descr: paramDescr
+    };
+
+    this.props.addValue(data);
+  }
+
   render() {
+    let error = this.props.keyValue.error;
     return (
       <MainWrapper>
         <Menu />
@@ -40,23 +71,37 @@ export default class AddKeyValuePairs extends Component {
           <MainBodyContainerWrapper pageTitle="Предмети">
             <p className="m-4">Добавяне на предмет</p>
             <div className="p-5">
-              <div className="form-group">
-                <CommonInput
-                  placeholder="Име"
-                  name="ParamValue"
-                  onChange={this.handleChange.bind(this)}
-                />
-                <div className="form-group mt-2">
-                  <CommonTextArea
-                    placeholder="Кратко описание"
-                    name="ParamDescr"
+              <form
+                onSubmit={e => {
+                  this.handleSubmit(e);
+                }}
+              >
+                <div className="form-group">
+                  <CommonInput
+                    placeholder="Име*"
+                    name="paramValue"
                     onChange={this.handleChange.bind(this)}
+                    error={error && error.value ? error.value : ""}
+                    required={true}
+                    pattern=".+"
+                    title="Полето трябва да съдържа поне 1 символ"
                   />
+                  <div className="form-group mt-2">
+                    <CommonTextArea
+                      placeholder="Кратко описание*"
+                      name="paramDescr"
+                      onChange={this.handleChange.bind(this)}
+                      error={error && error.descr ? error.value : ""}
+                      required={true}
+                      pattern=".+"
+                      title="Полето трябва да съдържа поне 1 символ"
+                    />
+                  </div>
+                  <div className="form-element">
+                    <ActionButton text="Запиши" type="submit" />
+                  </div>
                 </div>
-                <div className="form-element">
-                  <ActionButton text="Запиши" />
-                </div>
-              </div>
+              </form>
             </div>
           </MainBodyContainerWrapper>
         </TopBarWrapper>
@@ -64,3 +109,12 @@ export default class AddKeyValuePairs extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  keyValue: state.keyValue
+});
+
+export default connect(
+  mapStateToProps,
+  { addValue, startSignal, finishSignal }
+)(AddKeyValuePairs);

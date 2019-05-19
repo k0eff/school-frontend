@@ -34,7 +34,7 @@ CommonInput.propTypes = {
   id: PropTypes.string,
   type: PropTypes.string,
   className: PropTypes.string,
-  required: PropTypes.string,
+  required: PropTypes.bool,
   error: PropTypes.string,
   pattern: PropTypes.string,
   title: PropTypes.string

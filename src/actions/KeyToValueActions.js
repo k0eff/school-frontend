@@ -70,19 +70,19 @@ export const getParamValues = paramId => dispatch => {
       });
     });
 };
-export const AddValue = ({ paramId, value, descr }) => dispatch => {
+export const addValue = ({ paramName, value, descr }) => dispatch => {
   axios
-    .post("/api/valueByParamName", { paramId, value, descr })
-    .catch(e =>
-      dispatch({
-        type: KEYVALUE_ADD_ERROR,
-        payload: e.response.data
-      })
-    )
+    .post("/api/params/valueByParamName", { paramName, value, descr })
     .then(res => {
       dispatch({
         type: KEYVALUE_ADD_SUCCESS,
         payload: res.data
       });
-    });
+    })
+    .catch(e =>
+      dispatch({
+        type: KEYVALUE_ADD_ERROR,
+        payload: e.response.data
+      })
+    );
 };

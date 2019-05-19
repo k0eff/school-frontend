@@ -15,6 +15,7 @@ function CommonInput(props) {
         required={props.required ? props.required : ""}
         pattern={props.pattern ? props.pattern : ""}
         title={props.title ? props.title : ""}
+        rows={props.rows ? props.rows : "3"}
       />
       <div
         className="text-danger"
@@ -33,9 +34,10 @@ CommonInput.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   error: PropTypes.string,
-  required: PropTypes.string,
+  required: PropTypes.bool,
   pattern: PropTypes.string,
-  title: PropTypes.string
+  title: PropTypes.string,
+  rows: PropTypes.string
 };
 
 export default CommonInput;

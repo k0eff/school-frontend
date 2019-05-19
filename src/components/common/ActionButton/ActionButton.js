@@ -46,7 +46,7 @@ class ActionButton extends React.Component {
 
 ActionButton.propTypes = {
   text: PropTypes.string.isRequired,
-  type: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
   onClick: PropTypes.func,
   id: PropTypes.string,
   className: PropTypes.string
