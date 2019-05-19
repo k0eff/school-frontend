@@ -62,8 +62,6 @@ export const getParamValues = paramId => dispatch => {
       dispatch(finishSignal());
     })
     .catch(e => {
-      console.log(e);
-
       dispatch({
         type: KEYVALUE_ERR,
         payload: e.response.data

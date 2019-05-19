@@ -9,7 +9,6 @@ class TableData extends React.Component {
   tableBody = {};
 
   render() {
-    console.log("bla2", this.tableBody);
     return (
       <table
         className="table table-bordered dataTable"
