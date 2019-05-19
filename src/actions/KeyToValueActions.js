@@ -6,7 +6,8 @@ import {
   KEYVALUE_START_SIGNAL,
   KEYVALUE_FINISH_SIGNAL,
   KEYVALUE_ADD_ERROR,
-  KEYVALUE_ADD_SUCCESS
+  KEYVALUE_ADD_SUCCESS,
+  KEYVALUE_ADD_LOADING
 } from "./actionTypes";
 import isEmpty from "../utils/is-empty";
 
@@ -70,8 +71,15 @@ export const getParamValues = paramId => dispatch => {
       });
     });
 };
+
+export const loadingPageAdd = () => dispatch => {
+  dispatch({
+    type: KEYVALUE_ADD_LOADING
+  });
+};
+
 export const addValue = ({ paramName, value, descr }) => dispatch => {
-  dispatch(loading());
+  dispatch(loadingPageAdd());
 
   axios
     .post("/api/params/valueByParamName", { paramName, value, descr })

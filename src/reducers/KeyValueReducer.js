@@ -6,14 +6,20 @@ import {
   KEYVALUE_FINISH_SIGNAL,
   KEYVALUE_START_SIGNAL,
   KEYVALUE_ADD_SUCCESS,
-  KEYVALUE_ADD_ERROR
+  KEYVALUE_ADD_ERROR,
+  KEYVALUE_ADD_LOADING
 } from "../actions/actionTypes";
 
 const initialState = {
   loading: false,
   errors: {},
   values: [],
-  signal: false
+  signal: false,
+  add: {
+    loading: false,
+    value: {},
+    error: {}
+  }
 };
 
 export default function(state = initialState, action) {
@@ -56,16 +62,33 @@ export default function(state = initialState, action) {
     case KEYVALUE_ADD_SUCCESS:
       return {
         ...state,
-        loading: false,
-        values: action.payload
+
+        add: {
+          loading: false,
+          value: action.payload,
+          error: {}
+        }
       };
 
     case KEYVALUE_ADD_ERROR:
       return {
         ...state,
-        loading: false,
-        errors: action.payload
+        add: {
+          ...state.add,
+          loading: false,
+          error: action.payload
+        }
       };
+
+    case KEYVALUE_ADD_LOADING:
+      return {
+        ...state,
+        add: {
+          ...state.add,
+          loading: true
+        }
+      };
+
     default:
       return initialState;
   }

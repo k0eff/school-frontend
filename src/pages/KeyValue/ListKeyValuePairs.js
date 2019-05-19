@@ -18,6 +18,7 @@ import TopBarWrapper from "../../components/wrappers/topBarWrapper";
 import TableData from "../../components/TableData/tableData";
 import TableNav from "../../components/TableData/tableNav";
 import TableSearch from "../../components/TableData/tableSearch";
+import CommonCard from "../../components/common/CommonCard/CommonCard";
 
 class KeyValuePairs extends Component {
   constructor(props) {
@@ -27,7 +28,8 @@ class KeyValuePairs extends Component {
         loading: false,
         signal: false,
         errors: {},
-        values: []
+        values: [],
+        paramName: ""
       }
     };
 
@@ -37,9 +39,9 @@ class KeyValuePairs extends Component {
       props.match.params.paramName !== undefined &&
       !props.match.params.paramName.match(/[A-Za-z0-9]/)
     ) {
-      this.paramName = "default";
+      this.state.paramName = "default";
     } else {
-      this.paramName = props.match.params.paramName;
+      this.state.paramName = props.match.params.paramName;
     }
   }
 
@@ -52,7 +54,7 @@ class KeyValuePairs extends Component {
       isEmpty(props.keyValue.params)
     ) {
       props.startSignal();
-      props.checkIfParamExists(this.paramName);
+      props.checkIfParamExists(this.state.paramName);
     }
   }
 
@@ -68,6 +70,11 @@ class KeyValuePairs extends Component {
         <TopBarWrapper>
           <MainBodyContainerWrapper pageTitle="Предмети">
             <p className="m-4">Списък с добавени предмети</p>
+            <CommonCard
+              linkText="Добави"
+              link={"/KeyValue/add/" + this.state.paramName}
+              borderLeftClass="border-left-warning"
+            />
           </MainBodyContainerWrapper>
 
           <div className="card shadow mb-4">

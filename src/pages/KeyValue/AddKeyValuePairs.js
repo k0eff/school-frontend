@@ -18,12 +18,19 @@ import TopBarWrapper from "../../components/wrappers/topBarWrapper";
 import ActionButton from "../../components/common/ActionButton/ActionButton";
 import CommonInput from "../../components/common/CommonInput/CommonInput";
 import CommonTextArea from "../../components/common/CommonTextArea/CommonTextArea";
+import CommonCard from "../../components/common/CommonCard/CommonCard";
+import CommonFormErrorMsg from "../../components/common/CommonFormErrorMsg/CommonFormErrorMsg";
 
 class AddKeyValuePairs extends Component {
   static propTypes = {
     addValue: PropTypes.func.isRequired,
     startSignal: PropTypes.func.isRequired,
-    finishSignal: PropTypes.func.isRequired
+    finishSignal: PropTypes.func.isRequired,
+    add: PropTypes.shape({
+      loading: PropTypes.bool.isRequired,
+      value: PropTypes.object.isRequired,
+      error: PropTypes.object.isRequired
+    })
   };
 
   constructor(props) {
@@ -63,9 +70,9 @@ class AddKeyValuePairs extends Component {
   }
 
   render() {
-    let { error, values, loading } = this.props.keyValue;
+    let { error, value, loading } = this.props.keyValue.add;
     let success = false;
-    if (!isEmpty(values)) {
+    if (!isEmpty(value)) {
       // New value has been added
       success = true;
       setTimeout(() => {
@@ -107,6 +114,15 @@ class AddKeyValuePairs extends Component {
                       title="Полето трябва да съдържа поне 1 символ"
                     />
                   </div>
+
+                  <CommonFormErrorMsg
+                    error={
+                      error && error.error && typeof error.error === "string"
+                        ? error.error
+                        : ""
+                    }
+                  />
+
                   <div className="form-element">
                     <ActionButton
                       text="Запиши"
