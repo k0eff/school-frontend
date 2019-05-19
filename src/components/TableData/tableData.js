@@ -41,7 +41,7 @@ class TableData extends React.Component {
               return (
                 <tr role="row" className="odd">
                   <td colSpan="3">
-                    <div class="alert alert-secondary m-1" role="alert">
+                    <div className="alert alert-secondary m-1" role="alert">
                       {errors.error}
                     </div>
                   </td>
