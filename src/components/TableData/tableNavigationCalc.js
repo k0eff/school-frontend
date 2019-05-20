@@ -2,7 +2,7 @@ class tableNavigation {
   _initialData;
   _data;
   _linesPerPage = 50;
-  _totalLength;
+  _totalRecords;
   _currPage = 1;
   _pagesBefore = 3;
   _pagesAfter = 3;
@@ -12,8 +12,10 @@ class tableNavigation {
   _theoreticalMaxOfCurrentPage;
   _minPageShown = -1;
   _maxPageShown = -1;
-  _prevPage;
-  _nextPage;
+  _prevPage = -1;
+  _nextPage = -1;
+  _alreadyCalculated = [];
+  _processed;
 
   constructor(
     initialData,
@@ -36,7 +38,7 @@ class tableNavigation {
 
     this._makeCalculations(
       this._linesPerPage,
-      this._initialData.length, // TotalLength
+      this._initialData.length, // totalRecords
       this._currPage,
       this._pagesBefore,
       this._pagesAfter
@@ -48,13 +50,47 @@ class tableNavigation {
       this._linesPerPage
     );
   }
+  // minRecordShown: PropTypes.number, // may not be required if search mode is on
+  // maxRecordShown: PropTypes.number, // may not be required if search mode is on
 
-  get totalLength() {
+  // X totalRecords: PropTypes.number.isRequired,
+
+  // X minPageShown: PropTypes.number.isRequired,
+  // X maxPageShown: PropTypes.number.isRequired,
+
+  // X currPage: PropTypes.number.isRequired,
+  // X prevPage: PropTypes.number.isRequired, // if prevPage === currPage -- the button will be disabled
+  // X nextPage: PropTypes.number.isRequired, // if nextPage === currPage -- the button will be disabled
+
+  get totalRecords() {
     return this._initialData.length;
   }
 
   get data() {
     return this._data;
+  }
+
+  get minPageShown() {
+    return this._maxPageShown;
+  }
+  get maxPageShown() {
+    return this._maxPageShown;
+  }
+  get currPage() {
+    return this._currPage;
+  }
+  get prevPage() {
+    return this._prevPage;
+  }
+  get nextPage() {
+    return this._nextPage;
+  }
+
+  checkIfProcessed(varObj) {
+    const paramToString = varObj => Object.keys(varObj)[0];
+
+    if (paramToString(varObj) in this._processed) return true;
+    else return false;
   }
 
   _processRecordsForCurrentPage = (data, currPage, linesPerPage) => {
@@ -75,7 +111,7 @@ class tableNavigation {
     // Calculate currPage
     let theoreticalMinOfCurrentPage = 1;
     let theoreticalMaxOfCurrentPage = Math.ceil(
-      this._totalLength / this._linesPerPage
+      this._totalRecords / this._linesPerPage
     );
     if (
       this._currPage < theoreticalMinOfCurrentPage ||
@@ -100,7 +136,7 @@ class tableNavigation {
     //Calculate max pages in the list for the page navigation
     let maxPageShown = this._maxPageShown;
     if (maxPageShown < this._currPage)
-      maxPageShown = this._currPage + this._pagesAfter; //as minPage affects, this check serves to check whether it has impacted maxPage
+      maxPageShown = this._currPage + this._pagesAfter; //as minPage affects maxPage, this check serves to check whether it has impacted maxPage
     if (maxPageShown > this._theoreticalMaxOfCurrentPage) {
       let delta = maxPageShown - this._theoreticalMaxOfCurrentPage;
       maxPageShown = this._theoreticalMaxOfCurrentPage;
@@ -114,13 +150,13 @@ class tableNavigation {
     let prevPage = this._currPage - 1;
     if (prevPage < this._theoreticalMinOfCurrentPage) prevPage = 0;
 
-    this._prevPage = _prevPage;
+    this._prevPage = prevPage;
   }
 
   _calcNextPage() {
     //Calculate nextPage
     let nextPage = this._currPage + 1;
     if (nextPage > this._theoreticalMaxOfCurrentPage) nextPage = 0;
-    this._nextPage = _nextPage;
+    this._nextPage = nextPage;
   }
 }
