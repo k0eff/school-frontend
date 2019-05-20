@@ -1,4 +1,4 @@
-class tableNavigation {
+export default class tableNavigation {
   _initialData;
   _data;
   _linesPerPage = 50;
@@ -8,8 +8,8 @@ class tableNavigation {
   _pagesAfter = 3;
   _minRecordShown;
   _maxRecordShown;
-  _theoreticalMinOfCurrentPage;
-  _theoreticalMaxOfCurrentPage;
+  _theoreticalMinOfCurrentPage = -1;
+  _theoreticalMaxOfCurrentPage = -1;
   _minPageShown = -1;
   _maxPageShown = -1;
   _prevPage = -1;
@@ -30,25 +30,15 @@ class tableNavigation {
     this._pagesBefore = pagesBefore;
     this._pagesAfter = pagesAfter;
 
+    this._totalRecords = this._initialData.length;
+
     this._validateCurrentPage(); // has to be called first as the requested page may not be valid, i.e. if it is too low or too high. In such case the edge page will be served
 
     this._calculateMinMaxPage();
     this._calcPrevPage();
     this._calcNextPage();
 
-    this._makeCalculations(
-      this._linesPerPage,
-      this._initialData.length, // totalRecords
-      this._currPage,
-      this._pagesBefore,
-      this._pagesAfter
-    );
-
-    this._processRecordsForCurrentPage(
-      this._initialData,
-      this._currPage, //this is safe only after validating currPage
-      this._linesPerPage
-    );
+    this._processRecordsForCurrentPage();
   }
   // minRecordShown: PropTypes.number, // may not be required if search mode is on
   // maxRecordShown: PropTypes.number, // may not be required if search mode is on
@@ -71,7 +61,7 @@ class tableNavigation {
   }
 
   get minPageShown() {
-    return this._maxPageShown;
+    return this._minPageShown;
   }
   get maxPageShown() {
     return this._maxPageShown;
@@ -85,26 +75,32 @@ class tableNavigation {
   get nextPage() {
     return this._nextPage;
   }
+  get minRecordShown() {
+    return this._minRecordShown;
+  }
 
-  checkIfProcessed(varObj) {
+  get maxRecordShown() {
+    return this._maxRecordShown;
+  }
+
+  _checkIfProcessed(varObj) {
     const paramToString = varObj => Object.keys(varObj)[0];
 
     if (paramToString(varObj) in this._processed) return true;
     else return false;
   }
 
-  _processRecordsForCurrentPage = (data, currPage, linesPerPage) => {
+  _processRecordsForCurrentPage = () => {
     let newData = [];
-    let minRecordShown = (currPage - 1) * linesPerPage; // 1 is the smallest page, i.e. we need records from i=0 to i=9
-    let maxRecordShown = currPage * linesPerPage - 1; // i.e. records go to i=9
+    let minRecordShown = (this._currPage - 1) * this._linesPerPage; // 1 is the smallest page, i.e. we need records from i=0 to i=9
+    let maxRecordShown = this._currPage * this._linesPerPage - 1; // i.e. records go to i=9
     for (let i = minRecordShown; i <= maxRecordShown; i++) {
       // data[i] may not exist in the last page, where the page is not full of records
-      if (data[i]) newData = [...newData, data[i]];
+      if (this._initialData[i]) newData.push(this._initialData[i]);
     }
     this._data = newData;
     this._minRecordShown = minRecordShown;
     this._maxRecordShown = maxRecordShown;
-    return { newData, minRecordShown, maxRecordShown };
   };
 
   _validateCurrentPage() {
@@ -124,25 +120,39 @@ class tableNavigation {
   }
 
   _calculateMinMaxPage() {
-    //Calculate min pages in the list for the page navigation
+    // min page
     let minPageShown = this._currPage - this._pagesBefore;
     if (minPageShown < this._theoreticalMinOfCurrentPage) {
-      let delta = minPageShown - this._theoreticalMinOfCurrentPage;
       minPageShown = this._theoreticalMinOfCurrentPage;
-      this._maxPageShown = this._currPage + this._pagesAfter + delta;
     }
     this._minPageShown = minPageShown;
 
-    //Calculate max pages in the list for the page navigation
-    let maxPageShown = this._maxPageShown;
-    if (maxPageShown < this._currPage)
-      maxPageShown = this._currPage + this._pagesAfter; //as minPage affects maxPage, this check serves to check whether it has impacted maxPage
+    // max page
+    let maxPageShown = this._currPage + this._pagesAfter;
     if (maxPageShown > this._theoreticalMaxOfCurrentPage) {
-      let delta = maxPageShown - this._theoreticalMaxOfCurrentPage;
       maxPageShown = this._theoreticalMaxOfCurrentPage;
-      // TODO: Check if this delta could affect the minPage somehow - check if delta can be added to minPageShown
     }
     this._maxPageShown = maxPageShown;
+
+    // //Calculate min pages in the list for the page navigation
+    // let minPageShown = this._currPage - this._pagesBefore;
+    // if (minPageShown < this._theoreticalMinOfCurrentPage) {
+    //   // let delta = minPageShown - this._theoreticalMinOfCurrentPage;
+    //   // if (delta < 0) delta = 0;
+    //   minPageShown = this._theoreticalMinOfCurrentPage;
+    //   this._maxPageShown = this._currPage + this._pagesAfter /*+ delta */;
+    // }
+    // this._minPageShown = minPageShown;
+    // //Calculate max pages in the list for the page navigation
+    // let maxPageShown = this._maxPageShown;
+    // if (maxPageShown < this._currPage)
+    //   maxPageShown = this._currPage + this._pagesAfter; //as minPage affects maxPage, this check serves to check whether it has impacted maxPage
+    // if (maxPageShown > this._theoreticalMaxOfCurrentPage) {
+    //   //   let delta = maxPageShown - this._theoreticalMaxOfCurrentPage;
+    //   maxPageShown = this._theoreticalMaxOfCurrentPage;
+    //   // TODO: Check if this delta could affect the minPage somehow - check if delta can be added to minPageShown
+    // }
+    // this._maxPageShown = maxPageShown;
   }
 
   _calcPrevPage() {

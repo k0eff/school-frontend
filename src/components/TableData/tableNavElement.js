@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 function tableNavElement(props) {
+
   let { disabled, status, linkWithoutNumber, linkText, pageNumber } = props;
 
   let liClassName = "paginate_button page-item ";
@@ -28,7 +29,8 @@ tableNavElement.propTypes = {
   disabled: PropTypes.oneOf(["disabled", ""]).isRequired,
   status: PropTypes.oneOf(["previous", "next", "active", ""]).isRequired,
   linkWithoutNumber: PropTypes.string.isRequired,
-  linkText: PropTypes.string.isRequired,
+  linkText: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
   pageNumber: PropTypes.number.isRequired
 };
 

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import memoize from "memoize-one";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
@@ -30,36 +31,63 @@ class KeyValuePairs extends Component {
         loading: false,
         signal: false,
         errors: {},
-        values: [],
-        paramName: ""
+        values: []
       },
+      paramName: "",
       linesPerPage: 10,
       pageNum: 1,
-      data: []
+      data: [],
+      baseLink: "/KeyValue/list/",
+      link: ""
     };
 
     this.tableHeaders = ["Идентификатор", "Стойност", "Описание"];
-
-    //get paramName from url
-    if (
-      props.match.params.paramName !== undefined &&
-      !props.match.params.paramName.match(/[A-Za-z0-9]/)
-    ) {
-      this.state.paramName = "default";
-    } else {
-      this.state.paramName = props.match.params.paramName;
-    }
-
-    //get pageNum from url
-    if (
-      props.match.params.pageNum !== undefined &&
-      !props.match.params.pageNum.match(/[0-9]/)
-    ) {
-      this.state.pageNum = 1;
-    } else {
-      this.state.pageNum = props.match.params.pageNum;
-    }
   }
+
+  getParamName = memoize((propsParamName, stateParamName) => {
+    if (propsParamName !== undefined && !propsParamName.match(/[A-Za-z0-9]/)) {
+      return 1;
+    } else {
+      return propsParamName;
+    }
+  });
+
+  getLink = memoize((propsParamName, stateLink, stateBaseLink) => {
+    return stateBaseLink + propsParamName;
+  });
+
+  getPageNum = memoize((propsPageNum, statePageNum) => {
+    if (propsPageNum !== undefined && !propsPageNum.match(/[A-Za-z0-9]/)) {
+      return "default";
+    } else {
+      return propsPageNum;
+    }
+  });
+
+  // static getDerivedStateFromProps(props, state) {
+  //   //get paramName from url
+  //   if (
+  //     props.match.params.paramName !== undefined &&
+  //     !props.match.params.paramName.match(/[A-Za-z0-9]/)
+  //   ) {
+  //     state.paramName = "default";
+  //   } else {
+  //     state.paramName = props.match.params.paramName;
+  //   }
+  //   // set it to this.state
+
+  //   state.link += this.state.paramName;
+
+  //   //get pageNum from url
+  //   if (
+  //     props.match.params.pageNum !== undefined &&
+  //     !props.match.params.pageNum.match(/[0-9]/)
+  //   ) {
+  //     state.pageNum = 1;
+  //   } else {
+  //     state.pageNum = props.match.params.pageNum;
+  //   }
+  // }
 
   componentDidMount() {
     let { props } = this;
@@ -70,11 +98,59 @@ class KeyValuePairs extends Component {
       isEmpty(props.keyValue.params)
     ) {
       props.startSignal();
-      props.checkIfParamExists(this.state.paramName);
+      const paramName = this.getParamName(
+        this.props.match.params.paramName,
+        this.state.paramName
+      );
+      props.checkIfParamExists(paramName);
     }
   }
 
   render = () => {
+    const paramName = this.getParamName(
+      this.props.match.params.paramName,
+      this.state.paramName
+    );
+
+    const pageNum = this.getPageNum(
+      this.props.match.params.pageNum,
+      this.state.pageNum
+    );
+
+    const link = this.getLink(
+      this.props.match.params.paramName,
+      this.state.link,
+      this.state.baseLink
+    );
+
+    let meta = {};
+    let data = [];
+    let tableNavHtml;
+    let dataProcessor;
+
+    if (!isEmpty(this.props.keyValue.values)) {
+      dataProcessor = new tableNavigationCalc(
+        [...this.props.keyValue.values],
+        this.state.linesPerPage,
+        pageNum
+      );
+
+      meta = {
+        totalRecords: dataProcessor.totalRecords,
+        minPageShown: dataProcessor.minPageShown,
+        maxPageShown: dataProcessor.maxPageShown,
+        currPage: dataProcessor.currPage,
+        prevPage: dataProcessor.prevPage,
+        nextPage: dataProcessor.nextPage,
+        minRecordShown: dataProcessor.minRecordShown,
+        maxRecordShown: dataProcessor.maxRecordShown,
+        link
+      };
+
+      data = dataProcessor.data;
+      tableNavHtml = <TableNav meta={meta} />;
+    }
+
     let dataTableWrapperStyles = {
       width: 95 + "%"
     };
@@ -91,7 +167,7 @@ class KeyValuePairs extends Component {
             <p className="m-4">Списък с добавени предмети</p>
             <CommonCard
               linkText="Добави"
-              link={"/KeyValue/add/" + this.state.paramName}
+              link={"/KeyValue/add/" + paramName}
               borderLeftClass="border-left-warning"
             />
           </MainBodyContainerWrapper>
@@ -108,13 +184,13 @@ class KeyValuePairs extends Component {
                   <div className="row">
                     <div className="col-sm-12">
                       <TableData
-                        data={this.props.keyValue.values}
+                        data={data}
                         headers={this.tableHeaders}
                         errors={this.props.keyValue.errors}
                       />
                     </div>
                   </div>
-                  <TableNav length={length} linesPerPage="10" />
+                  {tableNavHtml}
                 </div>
               </div>
             </div>

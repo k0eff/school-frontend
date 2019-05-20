@@ -1,10 +1,12 @@
 import React from "react";
 
 import PropTypes from "prop-types";
-import tableNavElement from "./tableNavElement";
+import TableNavElement from "./TableNavElement";
 
 function tableNav(props) {
   const { meta } = props;
+
+  let tableNavMiddle = "";
 
   return (
     <div className="row">
@@ -17,8 +19,8 @@ function tableNav(props) {
         >
           {(() => {
             if (meta.minRecordShown && meta.maxRecordShown)
-              return `Showing 1 to 10 of ${props.totalRecords} entries`;
-            else return `Showing ${props.totalRecords} entries`;
+              return `Showing 1 to 10 of ${meta.totalRecords} entries`;
+            else return `Showing ${meta.totalRecords} entries`;
           })()}
         </div>
       </div>
@@ -30,10 +32,10 @@ function tableNav(props) {
           <ul className="pagination">
             {(() => {
               return (
-                <tableNavElement
+                <TableNavElement
                   linkWithoutNumber={meta.link + "/"}
                   linkText="Предишна"
-                  pageNumber={meta.prevpage}
+                  pageNumber={meta.prevPage}
                   disabled={meta.prevPage === meta.currPage ? "disabled" : ""}
                   status="previous"
                 />
@@ -41,25 +43,28 @@ function tableNav(props) {
             })()}
 
             {(() => {
-              for (let i = meta.minDisplPage; i <= meta.maxDisplPage; i++) {
-                return (
-                  <tableNavElement
+              let out = [];
+              for (let i = meta.minPageShown; i <= meta.maxPageShown; i++) {
+                out.push(
+                  <TableNavElement
                     linkWithoutNumber={meta.link + "/"}
                     linkText={i}
-                    pageNumber={meta.prevpage}
+                    pageNumber={i}
                     disabled=""
                     status={i === meta.currPage ? "active" : ""}
+                    key={i}
                   />
                 );
               }
+              return out;
             })()}
-
+            {tableNavMiddle}
             {(() => {
               return (
-                <tableNavElement
+                <TableNavElement
                   linkWithoutNumber={meta.link + "/"}
                   linkText="Следваща"
-                  pageNumber={meta.prevpage}
+                  pageNumber={meta.nextPage}
                   disabled={meta.nextPage === meta.currPage ? "disabled" : ""}
                   status="next"
                 />
@@ -86,7 +91,7 @@ tableNav.propTypes = {
     prevPage: PropTypes.number.isRequired, // if prevPage === currPage -- the button will be disabled
     nextPage: PropTypes.number.isRequired, // if nextPage === currPage -- the button will be disabled
 
-    link: PropTypes.string.isRequired
+    link: PropTypes.string.isRequired //no trailing slash "/"
   })
 };
 export default tableNav;
