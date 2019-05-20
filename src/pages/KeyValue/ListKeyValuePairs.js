@@ -20,6 +20,8 @@ import TableNav from "../../components/TableData/tableNav";
 import TableSearch from "../../components/TableData/tableSearch";
 import CommonCard from "../../components/common/CommonCard/CommonCard";
 
+import tableNavigationCalc from "../../components/TableData/tableNavigationCalc";
+
 class KeyValuePairs extends Component {
   constructor(props) {
     super(props);
@@ -30,11 +32,15 @@ class KeyValuePairs extends Component {
         errors: {},
         values: [],
         paramName: ""
-      }
+      },
+      linesPerPage: 10,
+      pageNum: 1,
+      data: []
     };
 
     this.tableHeaders = ["Идентификатор", "Стойност", "Описание"];
 
+    //get paramName from url
     if (
       props.match.params.paramName !== undefined &&
       !props.match.params.paramName.match(/[A-Za-z0-9]/)
@@ -42,6 +48,16 @@ class KeyValuePairs extends Component {
       this.state.paramName = "default";
     } else {
       this.state.paramName = props.match.params.paramName;
+    }
+
+    //get pageNum from url
+    if (
+      props.match.params.pageNum !== undefined &&
+      !props.match.params.pageNum.match(/[0-9]/)
+    ) {
+      this.state.pageNum = 1;
+    } else {
+      this.state.pageNum = props.match.params.pageNum;
     }
   }
 
@@ -62,6 +78,9 @@ class KeyValuePairs extends Component {
     let dataTableWrapperStyles = {
       width: 95 + "%"
     };
+    let values = this.props.keyValue.values;
+    let length = 0;
+    if (!isEmpty(values)) length = values.length;
 
     return (
       <MainWrapper>
@@ -95,7 +114,7 @@ class KeyValuePairs extends Component {
                       />
                     </div>
                   </div>
-                  <TableNav />
+                  <TableNav length={length} linesPerPage="10" />
                 </div>
               </div>
             </div>
