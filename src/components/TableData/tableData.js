@@ -27,7 +27,12 @@ class TableData extends React.Component {
           {(() => {
             let { errors, data, signal, loading } = this.props;
 
-            if (!isEmpty(data) && loading === false) {
+            if (
+              !isEmpty(data) &&
+              loading === false &&
+              signal === true &&
+              isEmpty(errors)
+            ) {
               return (this.tableBody = data.map(item => (
                 <tr role="row" className="odd" key={item._id}>
                   <td className="sorting_1">{item._id}</td>
