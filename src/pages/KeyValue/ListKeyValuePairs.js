@@ -95,6 +95,11 @@ class KeyValuePairs extends Component {
     return out;
   });
 
+  memoizedCheckIfParamExists = memoize(paramName => {
+    this.props.checkIfParamExists(paramName);
+    return true;
+  });
+
   handlePageNumChange(newPageNum) {
     this.setState({ pageNum: newPageNum });
   }
@@ -116,8 +121,13 @@ class KeyValuePairs extends Component {
       props.startSignal();
       const paramName = this.getParamName(this.props.match.params.paramName);
 
-      props.checkIfParamExists(paramName);
+      this.memoizedCheckIfParamExists(paramName);
     }
+  }
+
+  componentDidUpdate() {
+    const paramName = this.getParamName(this.props.match.params.paramName);
+    this.memoizedCheckIfParamExists(paramName);
   }
 
   render = () => {
@@ -186,6 +196,8 @@ class KeyValuePairs extends Component {
                         data={data}
                         headers={{ ...this.tableHeaders[paramName] }}
                         errors={this.props.keyValue.errors}
+                        signal={this.props.keyValue.signal}
+                        loading={this.props.keyValue.loading}
                       />
                     </div>
                   </div>

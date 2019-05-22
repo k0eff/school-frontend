@@ -25,9 +25,9 @@ class TableData extends React.Component {
         </tfoot>
         <tbody>
           {(() => {
-            let { errors, data } = this.props;
+            let { errors, data, signal, loading } = this.props;
 
-            if (!isEmpty(data)) {
+            if (!isEmpty(data) && loading === false) {
               return (this.tableBody = data.map(item => (
                 <tr role="row" className="odd" key={item._id}>
                   <td className="sorting_1">{item._id}</td>
@@ -43,6 +43,20 @@ class TableData extends React.Component {
                   <td colSpan="3">
                     <div className="alert alert-secondary m-1" role="alert">
                       {errors.error}
+                    </div>
+                  </td>
+                </tr>
+              );
+            } else if (
+              signal === true &&
+              loading === false &&
+              isEmpty(errors)
+            ) {
+              return (
+                <tr role="row" className="odd">
+                  <td colSpan="3">
+                    <div className="alert alert-secondary m-1" role="alert">
+                      Все още не са добавени данни
                     </div>
                   </td>
                 </tr>
