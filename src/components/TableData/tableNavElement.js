@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 function tableNavElement(props) {
-
   let { disabled, status, linkWithoutNumber, linkText, pageNumber } = props;
 
   let liClassName = "paginate_button page-item ";
@@ -13,7 +12,10 @@ function tableNavElement(props) {
   return (
     <li className={liClassName} id="dataTable_previous">
       <Link
-        to={linkWithoutNumber + pageNumber}
+        // to={linkWithoutNumber + pageNumber}
+        onClick={() => {
+          props.handlePageNumChange(pageNumber);
+        }}
         aria-controls="dataTable"
         data-dt-idx="0"
         tabIndex="0"

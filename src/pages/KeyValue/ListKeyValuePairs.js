@@ -33,18 +33,18 @@ class KeyValuePairs extends Component {
         errors: {},
         values: []
       },
-      paramName: "",
       linesPerPage: 10,
       pageNum: 1,
       data: [],
-      baseLink: "/KeyValue/list/",
-      link: ""
+      baseLink: "/KeyValue/list/"
     };
 
     this.tableHeaders = ["Идентификатор", "Стойност", "Описание"];
+
+    this.handlePageNumChange.bind(this);
   }
 
-  getParamName = memoize((propsParamName, stateParamName) => {
+  getParamName = memoize(propsParamName => {
     if (propsParamName !== undefined && !propsParamName.match(/[A-Za-z0-9]/)) {
       return 1;
     } else {
@@ -52,42 +52,42 @@ class KeyValuePairs extends Component {
     }
   });
 
-  getLink = memoize((propsParamName, stateLink, stateBaseLink) => {
-    return stateBaseLink + propsParamName;
+  getLink = memoize(({ paramName, baseLink }) => {
+    return baseLink + paramName;
   });
 
-  getPageNum = memoize((propsPageNum, statePageNum) => {
-    if (propsPageNum !== undefined && !propsPageNum.match(/[A-Za-z0-9]/)) {
-      return "default";
+  getPageNum = memoize(({ PropsPageNum }) => {
+    // assigns current pageNum if not previously assigned
+    if (
+      PropsPageNum !== undefined &&
+      (typeof PropsPageNum === "number" ||
+        (typeof PropsPageNum === "string" && PropsPageNum.match(/[0-9]/)))
+    ) {
+      return Number.parseInt(PropsPageNum);
     } else {
-      return propsPageNum;
+      return 1;
     }
+    //TODO: check how the pageNum could be validated (upon the loaded data)
   });
 
-  // static getDerivedStateFromProps(props, state) {
-  //   //get paramName from url
-  //   if (
-  //     props.match.params.paramName !== undefined &&
-  //     !props.match.params.paramName.match(/[A-Za-z0-9]/)
-  //   ) {
-  //     state.paramName = "default";
-  //   } else {
-  //     state.paramName = props.match.params.paramName;
-  //   }
-  //   // set it to this.state
+  getPaginatedData = memoize(PaginationProps => {
+    let out = new tableNavigationCalc(
+      PaginationProps.initialData,
+      PaginationProps.linesPerPage,
+      PaginationProps.pageNum
+    ).all;
+    return out;
+  });
 
-  //   state.link += this.state.paramName;
+  handlePageNumChange(newPageNum) {
+    this.setState({ pageNum: newPageNum });
+  }
 
-  //   //get pageNum from url
-  //   if (
-  //     props.match.params.pageNum !== undefined &&
-  //     !props.match.params.pageNum.match(/[0-9]/)
-  //   ) {
-  //     state.pageNum = 1;
-  //   } else {
-  //     state.pageNum = props.match.params.pageNum;
-  //   }
-  // }
+  static getDerivedStateFromProps(props, state) {
+    if (!isEmpty(props.keyValue.values))
+      return { ...state, data: props.keyValue.values };
+    else return null;
+  }
 
   componentDidMount() {
     let { props } = this;
@@ -98,65 +98,47 @@ class KeyValuePairs extends Component {
       isEmpty(props.keyValue.params)
     ) {
       props.startSignal();
-      const paramName = this.getParamName(
-        this.props.match.params.paramName,
-        this.state.paramName
-      );
+      const paramName = this.getParamName(this.props.match.params.paramName);
+
       props.checkIfParamExists(paramName);
     }
   }
 
   render = () => {
-    const paramName = this.getParamName(
-      this.props.match.params.paramName,
-      this.state.paramName
-    );
+    const paramName = this.getParamName(this.props.match.params.paramName);
 
-    const pageNum = this.getPageNum(
-      this.props.match.params.pageNum,
-      this.state.pageNum
-    );
+    const pageNum = this.getPageNum({
+      PropsPageNum: this.state.pageNum
+    });
 
-    const link = this.getLink(
-      this.props.match.params.paramName,
-      this.state.link,
-      this.state.baseLink
-    );
+    const link = this.getLink({
+      paramName: this.props.match.params.paramName,
+      baseLink: this.state.baseLink
+    });
 
     let meta = {};
     let data = [];
     let tableNavHtml;
-    let dataProcessor;
 
-    if (!isEmpty(this.props.keyValue.values)) {
-      dataProcessor = new tableNavigationCalc(
-        [...this.props.keyValue.values],
-        this.state.linesPerPage,
-        pageNum
-      );
+    let paginationData = this.getPaginatedData(
+      {
+        initialData: this.props.keyValue.values,
+        linesPerPage: this.state.linesPerPage,
+        pageNum: pageNum
+      },
+      this.state.returnedDataFromGetPagData
+    );
 
-      meta = {
-        totalRecords: dataProcessor.totalRecords,
-        minPageShown: dataProcessor.minPageShown,
-        maxPageShown: dataProcessor.maxPageShown,
-        currPage: dataProcessor.currPage,
-        prevPage: dataProcessor.prevPage,
-        nextPage: dataProcessor.nextPage,
-        minRecordShown: dataProcessor.minRecordShown,
-        maxRecordShown: dataProcessor.maxRecordShown,
-        link
-      };
+    meta = paginationData.stats;
+    meta = { ...meta, link };
+    data = paginationData.data;
 
-      data = dataProcessor.data;
-      tableNavHtml = <TableNav meta={meta} />;
-    }
-
-    let dataTableWrapperStyles = {
-      width: 95 + "%"
-    };
-    let values = this.props.keyValue.values;
-    let length = 0;
-    if (!isEmpty(values)) length = values.length;
+    tableNavHtml = (
+      <TableNav
+        meta={meta}
+        handlePageNumChange={this.handlePageNumChange.bind(this)}
+      />
+    );
 
     return (
       <MainWrapper>
@@ -179,7 +161,7 @@ class KeyValuePairs extends Component {
                 <div
                   id="dataTable_wrapper"
                   className="dataTables_wrapper dt-bootstrap4"
-                  style={dataTableWrapperStyles}
+                  style={{ width: "95%" }}
                 >
                   <div className="row">
                     <div className="col-sm-12">

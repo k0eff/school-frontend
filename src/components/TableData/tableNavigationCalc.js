@@ -39,6 +39,8 @@ export default class tableNavigation {
     this._calcNextPage();
 
     this._processRecordsForCurrentPage();
+
+    return this;
   }
   // minRecordShown: PropTypes.number, // may not be required if search mode is on
   // maxRecordShown: PropTypes.number, // may not be required if search mode is on
@@ -54,10 +56,6 @@ export default class tableNavigation {
 
   get totalRecords() {
     return this._initialData.length;
-  }
-
-  get data() {
-    return this._data;
   }
 
   get minPageShown() {
@@ -78,9 +76,41 @@ export default class tableNavigation {
   get minRecordShown() {
     return this._minRecordShown;
   }
-
   get maxRecordShown() {
     return this._maxRecordShown;
+  }
+
+  get all() {
+    return {
+      data: this.data,
+      stats: {
+        totalRecords: this.totalRecords,
+        minPageShown: this.minPageShown,
+        maxPageShown: this.maxPageShown,
+        currPage: this.currPage,
+        prevPage: this.prevPage,
+        nextPage: this.nextPage,
+        minRecordShown: this.minRecordShown,
+        maxRecordShown: this.maxRecordShown
+      }
+    };
+  }
+
+  get data() {
+    return this._data;
+  }
+
+  get stats() {
+    return {
+      totalRecords: this.totalRecords,
+      minPageShown: this.minPageShown,
+      maxPageShown: this.maxPageShown,
+      currPage: this.currPage,
+      prevPage: this.prevPage,
+      nextPage: this.nextPage,
+      minRecordShown: this.minRecordShown,
+      maxRecordShown: this.maxRecordShown
+    };
   }
 
   _checkIfProcessed(varObj) {

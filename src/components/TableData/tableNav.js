@@ -38,6 +38,7 @@ function tableNav(props) {
                   pageNumber={meta.prevPage}
                   disabled={meta.prevPage === meta.currPage ? "disabled" : ""}
                   status="previous"
+                  handlePageNumChange={props.handlePageNumChange}
                 />
               );
             })()}
@@ -52,6 +53,7 @@ function tableNav(props) {
                     pageNumber={i}
                     disabled=""
                     status={i === meta.currPage ? "active" : ""}
+                    handlePageNumChange={props.handlePageNumChange}
                     key={i}
                   />
                 );
@@ -66,6 +68,7 @@ function tableNav(props) {
                   linkText="Следваща"
                   pageNumber={meta.nextPage}
                   disabled={meta.nextPage === meta.currPage ? "disabled" : ""}
+                  handlePageNumChange={props.handlePageNumChange}
                   status="next"
                 />
               );

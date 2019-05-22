@@ -8,7 +8,6 @@ function tableHeaderContent(props) {
         ? props.headers.map(item => (
             <th
               className="sorting_asc"
-              tabIndex="0"
               aria-controls="dataTable"
               rowSpan="1"
               colSpan="1"
