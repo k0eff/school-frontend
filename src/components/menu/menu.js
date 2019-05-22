@@ -33,7 +33,28 @@ export default function menu() {
         <li className="nav-item">
           <Link className="nav-link" to="/KeyValue/list/Subject">
             <i className="fas fa-fw fa-table" />
-            <span>Предмети</span>
+            <span>Предмет</span>
+          </Link>
+        </li>
+
+        <li className="nav-item">
+          <Link className="nav-link" to="/KeyValue/list/ClassYear">
+            <i className="fas fa-fw fa-table" />
+            <span>Клас Година</span>
+          </Link>
+        </li>
+
+        <li className="nav-item">
+          <Link className="nav-link" to="/KeyValue/list/ClassGroup">
+            <i className="fas fa-fw fa-table" />
+            <span>Клас Буква</span>
+          </Link>
+        </li>
+
+        <li className="nav-item">
+          <Link className="nav-link" to="/KeyValue/list/SchoolingYear">
+            <i className="fas fa-fw fa-table" />
+            <span>Учебна година</span>
           </Link>
         </li>
 
