@@ -136,7 +136,7 @@ export default class tableNavigation {
       // data[i] may not exist in the last page, where the page is not full of records
       if (this._initialData[i]) newData.push(this._initialData[i]);
     }
-    debugger;
+
     this._data = newData;
     this._minRecordShown = minRecordShown;
     this._maxRecordShown = maxRecordShown;
