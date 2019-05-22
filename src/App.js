@@ -19,7 +19,7 @@ function App() {
           <Route exact path="/" component={Dashboard} />
           <Route path="/blank" component={Blank} />
           <Route
-            path="/KeyValue/list/:paramName/:pageNum"
+            path="/KeyValue/list/:paramName/:pageNum?"
             component={ListKeyValuePairs}
           />
           <Route path="/KeyValue/add/:paramName" component={AddKeyValuePairs} />
