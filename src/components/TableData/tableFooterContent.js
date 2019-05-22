@@ -22,7 +22,7 @@ function tableFooterContent(props) {
 }
 
 tableFooterContent.propTypes = {
-  headers: PropTypes.array.isRequired
+  headers: PropTypes.object.isRequired
 };
 
 export default tableFooterContent;
