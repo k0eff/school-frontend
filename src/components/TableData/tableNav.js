@@ -32,6 +32,7 @@ function tableNav(props) {
         <div
           className="dataTables_paginate paging_simple_numbers"
           id="dataTable_paginate"
+          style={{ float: "right", marginRight: "20px" }}
         >
           <ul className="pagination">
             {(() => {

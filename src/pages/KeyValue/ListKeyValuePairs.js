@@ -173,11 +173,12 @@ class KeyValuePairs extends Component {
           <div className="card shadow mb-4">
             <TableSearch />
             <div className="card-body">
+              {tableNavHtml}
               <div className="table-responsive">
                 <div
                   id="dataTable_wrapper"
                   className="dataTables_wrapper dt-bootstrap4"
-                  style={{ width: "95%" }}
+                  style={{ marginRight: "20px" }}
                 >
                   <div className="row">
                     <div className="col-sm-12">
@@ -188,7 +189,6 @@ class KeyValuePairs extends Component {
                       />
                     </div>
                   </div>
-                  {tableNavHtml}
                 </div>
               </div>
             </div>
