@@ -3,6 +3,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import TableNavElement from "./TableNavElement";
 
+import isEmpty from "../../utils/is-empty";
+
 function tableNav(props) {
   const { meta } = props;
 
@@ -18,9 +20,11 @@ function tableNav(props) {
           aria-live="polite"
         >
           {(() => {
-            if (meta.minRecordShown && meta.maxRecordShown)
-              return `Showing 1 to 10 of ${meta.totalRecords} entries`;
-            else return `Showing ${meta.totalRecords} entries`;
+            if (!isEmpty(meta.minRecordShown) && !isEmpty(meta.maxRecordShown))
+              return `Показани ${meta.minRecordShown +
+                1} до ${meta.maxRecordShown + 1} от ${meta.totalRecords +
+                1} записа`;
+            else return `Показани ${meta.totalRecords} записа`;
           })()}
         </div>
       </div>

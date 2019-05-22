@@ -123,11 +123,20 @@ export default class tableNavigation {
   _processRecordsForCurrentPage = () => {
     let newData = [];
     let minRecordShown = (this._currPage - 1) * this._linesPerPage; // 1 is the smallest page, i.e. we need records from i=0 to i=9
-    let maxRecordShown = this._currPage * this._linesPerPage - 1; // i.e. records go to i=9
+    let maxRecordShown = 0;
+    let lastPageDelta = this._initialData.length - minRecordShown;
+    if (lastPageDelta < this._linesPerPage) {
+      //this is the last page. The last page may not be full
+      maxRecordShown = minRecordShown + lastPageDelta;
+    } else {
+      maxRecordShown = this._currPage * this._linesPerPage - 1; // i.e. records go to i=9
+    }
+
     for (let i = minRecordShown; i <= maxRecordShown; i++) {
       // data[i] may not exist in the last page, where the page is not full of records
       if (this._initialData[i]) newData.push(this._initialData[i]);
     }
+    debugger;
     this._data = newData;
     this._minRecordShown = minRecordShown;
     this._maxRecordShown = maxRecordShown;

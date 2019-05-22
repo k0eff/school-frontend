@@ -47,11 +47,11 @@ class KeyValuePairs extends Component {
         },
         {
           name: "Стойност",
-          width: "130px"
+          width: "42%"
         },
         {
           name: "Описание",
-          width: "130px"
+          width: "42%"
         }
       ]
     };
