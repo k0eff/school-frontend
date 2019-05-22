@@ -55,6 +55,24 @@ class KeyValuePairs extends Component {
         }
       ]
     };
+    this.pageTitles = {
+      Subject: {
+        title: "Предмети",
+        descr: "Списък с добавени предмети"
+      },
+      ClassNumber: {
+        title: "Клас номер",
+        descr: "Списък с добавени номера на класове"
+      },
+      ClassLetter: {
+        title: "Клас буква",
+        descr: "Списък с добавени буквени обозначения на класове"
+      },
+      SchoolingYear: {
+        title: "Учебна година",
+        descr: "Списък с добавени учебни години"
+      }
+    };
 
     this.handlePageNumChange.bind(this);
   }
@@ -171,8 +189,16 @@ class KeyValuePairs extends Component {
         <Menu />
 
         <TopBarWrapper>
-          <MainBodyContainerWrapper pageTitle="Предмети">
-            <p className="m-4">Списък с добавени предмети</p>
+          <MainBodyContainerWrapper
+            pageTitle={
+              this.pageTitles[paramName] ? this.pageTitles[paramName].title : ""
+            }
+          >
+            <p className="m-4">
+              {this.pageTitles[paramName]
+                ? this.pageTitles[paramName].descr
+                : ""}
+            </p>
             <CommonCard
               linkText="Добави"
               link={"/KeyValue/add/" + paramName}
