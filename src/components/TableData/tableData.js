@@ -65,7 +65,7 @@ class TableData extends React.Component {
 
 TableData.propTypes = {
   data: PropTypes.array.isRequired,
-  headers: PropTypes.array.isRequired
+  headers: PropTypes.object.isRequired
 };
 
 export default TableData;

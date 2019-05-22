@@ -39,7 +39,22 @@ class KeyValuePairs extends Component {
       baseLink: "/KeyValue/list/"
     };
 
-    this.tableHeaders = ["Идентификатор", "Стойност", "Описание"];
+    this.tableHeaders = {
+      Subject: [
+        {
+          name: "Идентификатор",
+          width: "16%"
+        },
+        {
+          name: "Стойност",
+          width: "130px"
+        },
+        {
+          name: "Описание",
+          width: "130px"
+        }
+      ]
+    };
 
     this.handlePageNumChange.bind(this);
   }
@@ -167,7 +182,7 @@ class KeyValuePairs extends Component {
                     <div className="col-sm-12">
                       <TableData
                         data={data}
-                        headers={this.tableHeaders}
+                        headers={{ ...this.tableHeaders[paramName] }}
                         errors={this.props.keyValue.errors}
                       />
                     </div>
