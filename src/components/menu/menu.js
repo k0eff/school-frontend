@@ -58,6 +58,13 @@ export default function menu() {
           </Link>
         </li>
 
+        <li className="nav-item">
+          <Link className="nav-link" to="/eduPlan/list">
+            <i className="fas fa-fw fa-table" />
+            <span>Учебни планове</span>
+          </Link>
+        </li>
+
         {/* <!-- Divider --> */}
         <hr className="sidebar-divider d-none d-md-block" />
 

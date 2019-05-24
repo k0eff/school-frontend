@@ -10,6 +10,7 @@ import ListKeyValuePairs from "./pages/KeyValue/ListKeyValuePairs";
 import AddKeyValuePairs from "./pages/KeyValue/AddKeyValuePairs";
 
 import "./sbadmin2-min.css";
+import ListEduPlans from "./pages/eduPlan/ListEduPlans";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             component={ListKeyValuePairs}
           />
           <Route path="/KeyValue/add/:paramName" component={AddKeyValuePairs} />
+          <Route path="/eduPlan/list/" component={ListEduPlans} />
         </Switch>
       </BrowserRouter>
     </Provider>
