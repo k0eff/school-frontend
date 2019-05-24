@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
 import KeyValueReducer from "./KeyValueReducer";
+import EduPlanReducer from "./EduPlanReducer";
 
 export default combineReducers({
-  keyValue: KeyValueReducer
+  keyValue: KeyValueReducer,
+  eduPlan: EduPlanReducer
 });

@@ -2,12 +2,7 @@ import React, { Component } from "react";
 import memoize from "memoize-one";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-  checkIfParamExists,
-  startSignal,
-  finishSignal,
-  getParamValues
-} from "../../actions/KeyToValueActions";
+import { getEduPlans } from "../../actions/EduPlanActions";
 
 import isEmpty from "../../utils/is-empty";
 
@@ -23,55 +18,40 @@ import CommonCard from "../../components/common/CommonCard/CommonCard";
 
 import tableNavigationCalc from "../../components/TableData/tableNavigationCalc";
 
-class KeyValuePairs extends Component {
+class EduPlan extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      keyValue: {
+      eduPlan: {
         loading: false,
         signal: false,
         errors: {},
-        values: []
+        data: []
       },
       linesPerPage: 10,
       pageNum: 1,
       data: [],
-      baseLink: "/KeyValue/list/"
+      baseLink: "/eduPlan/list/"
     };
 
-    this.tableHeaders = {
-      Subject: [
-        {
-          name: "Идентификатор",
-          width: "16%"
-        },
-        {
-          name: "Стойност",
-          width: "42%"
-        },
-        {
-          name: "Описание",
-          width: "42%"
-        }
-      ]
-    };
-    this.pageTitles = {
-      Subject: {
-        title: "Предмети",
-        descr: "Списък с добавени предмети"
+    this.tableHeaders = [
+      {
+        name: "Идентификатор",
+        width: "16%"
       },
-      ClassNumber: {
-        title: "Клас номер",
-        descr: "Списък с добавени номера на класове"
+      {
+        name: "Стойност",
+        width: "42%"
       },
-      ClassLetter: {
-        title: "Клас буква",
-        descr: "Списък с добавени буквени обозначения на класове"
-      },
-      SchoolingYear: {
-        title: "Учебна година",
-        descr: "Списък с добавени учебни години"
+      {
+        name: "Описание",
+        width: "42%"
       }
+    ];
+
+    this.pageTitle = {
+      title: "Учебни планове",
+      descr: "Списък с добавени учебни планове"
     };
 
     this.handlePageNumChange.bind(this);
@@ -89,14 +69,14 @@ class KeyValuePairs extends Component {
     return baseLink + paramName;
   });
 
-  getPageNum = memoize(({ PropsPageNum }) => {
+  getPageNum = memoize(({ pageNum }) => {
     // assigns current pageNum if not previously assigned
     if (
-      PropsPageNum !== undefined &&
-      (typeof PropsPageNum === "number" ||
-        (typeof PropsPageNum === "string" && PropsPageNum.match(/[0-9]/)))
+      pageNum !== undefined &&
+      (typeof pageNum === "number" ||
+        (typeof pageNum === "string" && pageNum.match(/[0-9]/)))
     ) {
-      return Number.parseInt(PropsPageNum);
+      return Number.parseInt(pageNum);
     } else {
       return 1;
     }
@@ -123,66 +103,42 @@ class KeyValuePairs extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!isEmpty(props.keyValue.values))
-      return { ...state, data: props.keyValue.values };
+    if (!isEmpty(props.eduPlan.data))
+      return { ...state, data: props.eduPlan.data };
     else return null;
   }
 
   componentDidMount() {
     let { props } = this;
     if (
-      props.keyValue.signal === false &&
-      props.keyValue.loading === false &&
-      isEmpty(props.keyValue.error) &&
-      isEmpty(props.keyValue.params)
+      props.eduPlan.signal === false &&
+      props.eduPlan.loading === false &&
+      isEmpty(props.eduPlan.error) &&
+      isEmpty(props.eduPlan.params)
     ) {
-      props.startSignal();
-      const paramName = this.getParamName(this.props.match.params.paramName);
-
-      this.memoizedCheckIfParamExists(paramName);
+      this.props.getEduPlans(); //load the data
     }
   }
 
-  componentDidUpdate() {
-    const paramName = this.getParamName(this.props.match.params.paramName);
-    this.memoizedCheckIfParamExists(paramName);
-  }
-
   render = () => {
-    const paramName = this.getParamName(this.props.match.params.paramName);
-
     const pageNum = this.getPageNum({
-      PropsPageNum: this.state.pageNum
+      CurrPageNum: this.state.pageNum
     });
 
-    const link = this.getLink({
-      paramName: this.props.match.params.paramName,
-      baseLink: this.state.baseLink
-    });
+    const link = this.state.baseLink;
 
     let meta = {};
     let data = [];
-    let tableNavHtml;
 
-    let paginationData = this.getPaginatedData(
-      {
-        initialData: this.props.keyValue.values,
-        linesPerPage: this.state.linesPerPage,
-        pageNum: pageNum
-      },
-      this.state.returnedDataFromGetPagData
-    );
+    let paginationData = this.getPaginatedData({
+      initialData: this.props.eduPlan.data,
+      linesPerPage: this.state.linesPerPage,
+      pageNum: pageNum
+    });
 
     meta = paginationData.stats;
     meta = { ...meta, link };
     data = paginationData.data;
-
-    tableNavHtml = (
-      <TableNav
-        meta={meta}
-        handlePageNumChange={this.handlePageNumChange.bind(this)}
-      />
-    );
 
     return (
       <MainWrapper>
@@ -190,18 +146,12 @@ class KeyValuePairs extends Component {
 
         <TopBarWrapper>
           <MainBodyContainerWrapper
-            pageTitle={
-              this.pageTitles[paramName] ? this.pageTitles[paramName].title : ""
-            }
+            pageTitle={this.pageTitle ? this.pageTitle.title : ""}
           >
-            <p className="m-4">
-              {this.pageTitles[paramName]
-                ? this.pageTitles[paramName].descr
-                : ""}
-            </p>
+            <p className="m-4">{this.pageTitle ? this.pageTitle.descr : ""}</p>
             <CommonCard
               linkText="Добави"
-              link={"/KeyValue/add/" + paramName}
+              link={"/eduPlan/add/"}
               borderLeftClass="border-left-warning"
             />
           </MainBodyContainerWrapper>
@@ -209,7 +159,10 @@ class KeyValuePairs extends Component {
           <div className="card shadow mb-4">
             <TableSearch />
             <div className="card-body">
-              {tableNavHtml}
+              <TableNav
+                meta={meta}
+                handlePageNumChange={this.handlePageNumChange.bind(this)}
+              />
               <div className="table-responsive">
                 <div
                   id="dataTable_wrapper"
@@ -220,10 +173,10 @@ class KeyValuePairs extends Component {
                     <div className="col-sm-12">
                       <TableData
                         data={data}
-                        headers={{ ...this.tableHeaders[paramName] }}
-                        errors={this.props.keyValue.errors}
-                        signal={this.props.keyValue.signal}
-                        loading={this.props.keyValue.loading}
+                        headers={{ ...this.tableHeaders }}
+                        errors={this.props.eduPlan.errors}
+                        signal={this.props.eduPlan.signal}
+                        loading={this.props.eduPlan.loading}
                       />
                     </div>
                   </div>
@@ -237,18 +190,15 @@ class KeyValuePairs extends Component {
   };
 }
 
-KeyValuePairs.propTypes = {
-  checkIfParamExists: PropTypes.func.isRequired,
-  startSignal: PropTypes.func.isRequired,
-  finishSignal: PropTypes.func.isRequired,
-  getParamValues: PropTypes.func.isRequired
+EduPlan.propTypes = {
+  getEduPlans: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  keyValue: state.keyValue
+  eduPlan: state.eduPlan
 });
 
 export default connect(
   mapStateToProps,
-  { checkIfParamExists, startSignal, finishSignal, getParamValues }
-)(KeyValuePairs);
+  { getEduPlans }
+)(EduPlan);
