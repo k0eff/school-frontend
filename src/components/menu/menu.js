@@ -38,14 +38,14 @@ export default function menu() {
         </li>
 
         <li className="nav-item">
-          <Link className="nav-link" to="/KeyValue/list/ClassYear">
+          <Link className="nav-link" to="/KeyValue/list/ClassNumber">
             <i className="fas fa-fw fa-table" />
-            <span>Клас Година</span>
+            <span>Клас Номер</span>
           </Link>
         </li>
 
         <li className="nav-item">
-          <Link className="nav-link" to="/KeyValue/list/ClassGroup">
+          <Link className="nav-link" to="/KeyValue/list/ClassLetter">
             <i className="fas fa-fw fa-table" />
             <span>Клас Буква</span>
           </Link>
