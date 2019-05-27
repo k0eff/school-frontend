@@ -11,7 +11,7 @@ class TableData extends React.Component {
   tableBody = {};
 
   render() {
-    let { errors, signal, loading, headers } = this.props;
+    let { errors, signal, loading, headers, data } = this.props;
 
     return (
       <table
@@ -29,7 +29,6 @@ class TableData extends React.Component {
         </tfoot>
         <tbody>
           {(() => {
-            let { data } = this.props;
             if (
               !isEmpty(data) &&
               loading === false &&
@@ -50,7 +49,7 @@ class TableData extends React.Component {
                           headers[headerIndex].date === true
                         ) {
                           return (
-                            <td>
+                            <td key={item._id + "_td_" + headerIndex}>
                               {format.asString(
                                 "dd.MM.yyyy hh:mm:ss",
                                 new Date(output)
@@ -58,7 +57,11 @@ class TableData extends React.Component {
                             </td>
                           );
                         } else {
-                          return <td>{output}</td>;
+                          return (
+                            <td key={item._id + "_td_" + headerIndex}>
+                              {output}
+                            </td>
+                          );
                         }
                       })
                     : ""}
