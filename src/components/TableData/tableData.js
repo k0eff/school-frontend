@@ -110,7 +110,14 @@ class TableData extends React.Component {
 }
 
 TableData.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      width: PropTypes.string.isRequired,
+      access: PropTypes.string.isRequired,
+      date: PropTypes.bool
+    }).isRequired
+  ),
   headers: PropTypes.object.isRequired
 };
 

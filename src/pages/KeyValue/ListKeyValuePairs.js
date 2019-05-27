@@ -56,6 +56,57 @@ class KeyValuePairs extends Component {
           width: "42%",
           access: "descr"
         }
+      ],
+      ClassNumber: [
+        {
+          name: "Идентификатор",
+          width: "16%",
+          access: "_id"
+        },
+        {
+          name: "Стойност",
+          width: "42%",
+          access: "value"
+        },
+        {
+          name: "Описание",
+          width: "42%",
+          access: "descr"
+        }
+      ],
+      ClassLetter: [
+        {
+          name: "Идентификатор",
+          width: "16%",
+          access: "_id"
+        },
+        {
+          name: "Стойност",
+          width: "42%",
+          access: "value"
+        },
+        {
+          name: "Описание",
+          width: "42%",
+          access: "descr"
+        }
+      ],
+      SchoolingYear: [
+        {
+          name: "Идентификатор",
+          width: "16%",
+          access: "_id"
+        },
+        {
+          name: "Стойност",
+          width: "42%",
+          access: "value"
+        },
+        {
+          name: "Описание",
+          width: "42%",
+          access: "descr"
+        }
       ]
     };
     this.pageTitles = {
