@@ -4,11 +4,15 @@ import Spinner from "../../components/common/Spinner/spinner";
 import TableHeaderContent from "./tableHeaderContent";
 import TableFooterContent from "./tableFooterContent";
 import isEmpty from "../../utils/is-empty";
+import readObjectByString from "../../utils/readObjectByString";
+import format from "date-format";
 
 class TableData extends React.Component {
   tableBody = {};
 
   render() {
+    let { errors, signal, loading, headers } = this.props;
+
     return (
       <table
         className="table table-bordered dataTable"
@@ -18,28 +22,55 @@ class TableData extends React.Component {
         role="grid"
       >
         <thead>
-          <TableHeaderContent headers={this.props.headers} />
+          <TableHeaderContent headers={headers} />
         </thead>
         <tfoot>
-          <TableFooterContent headers={this.props.headers} />
+          <TableFooterContent headers={headers} />
         </tfoot>
         <tbody>
           {(() => {
-            let { errors, data, signal, loading } = this.props;
-
+            let { data } = this.props;
+            console.log(data);
             if (
               !isEmpty(data) &&
               loading === false &&
               signal === true &&
               isEmpty(errors)
             ) {
-              return (this.tableBody = data.map(item => (
+              console.log(data, 1);
+              return data.map(item => (
                 <tr role="row" className="odd" key={item._id}>
-                  <td className="sorting_1">{item._id}</td>
+                  {console.log(data, 2)}
+                  {!isEmpty(headers)
+                    ? Object.keys(headers).map(headerIndex => {
+                        let output = readObjectByString(
+                          item,
+                          headers[headerIndex].access
+                        );
+                        console.log(headers[headerIndex].access);
+                        if (
+                          headers[headerIndex] &&
+                          headers[headerIndex].date &&
+                          headers[headerIndex].date === true
+                        ) {
+                          return (
+                            <td>
+                              {format.asString(
+                                "dd.MM.yyyy hh:mm:ss",
+                                new Date(output)
+                              )}
+                            </td>
+                          );
+                        } else {
+                          return <td>{output}</td>;
+                        }
+                      })
+                    : ""}
+                  {/* <td className="sorting_1">{item._id}</td>
                   <td>{item.value}</td>
-                  <td>{item.descr}</td>
+                  <td>{item.descr}</td> */}
                 </tr>
-              )));
+              ));
             }
 
             if (!isEmpty(errors)) {

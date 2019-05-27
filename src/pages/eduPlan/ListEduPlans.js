@@ -37,15 +37,29 @@ class EduPlan extends Component {
     this.tableHeaders = [
       {
         name: "Идентификатор",
-        width: "16%"
+        width: "16%",
+        access: "_id"
       },
       {
-        name: "Стойност",
-        width: "42%"
+        name: "Име",
+        width: "42%",
+        access: "name"
       },
       {
-        name: "Описание",
-        width: "42%"
+        name: "Учебна година",
+        width: "42%",
+        access: "schoolingYear.value"
+      },
+      {
+        name: "Клас буква",
+        width: "42%",
+        access: "classLetter.value"
+      },
+      {
+        name: "Последно редактирано",
+        width: "42%",
+        access: "updatedAt",
+        date: true
       }
     ];
 
@@ -80,8 +94,6 @@ class EduPlan extends Component {
     } else {
       return 1;
     }
-
-    //TODO: check how the pageNum could be validated (upon the loaded data)
   });
 
   getPaginatedData = memoize(PaginationProps => {

@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "0.18.0",
     "babel-loader": "8.0.5",
+    "date-format": "2.0.0",
     "http-proxy-middleware": "0.19.1",
     "memoize-one": "5.0.4",
     "prop-types": "15.7.2",
