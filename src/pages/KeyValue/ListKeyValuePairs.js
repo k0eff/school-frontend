@@ -43,15 +43,18 @@ class KeyValuePairs extends Component {
       Subject: [
         {
           name: "Идентификатор",
-          width: "16%"
+          width: "16%",
+          access: "_id"
         },
         {
           name: "Стойност",
-          width: "42%"
+          width: "42%",
+          access: "value"
         },
         {
           name: "Описание",
-          width: "42%"
+          width: "42%",
+          access: "descr"
         }
       ]
     };
@@ -183,7 +186,6 @@ class KeyValuePairs extends Component {
         handlePageNumChange={this.handlePageNumChange.bind(this)}
       />
     );
-
     return (
       <MainWrapper>
         <Menu />
