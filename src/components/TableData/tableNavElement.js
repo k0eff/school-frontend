@@ -11,7 +11,7 @@ function tableNavElement(props) {
 
   return (
     <li className={liClassName} id="dataTable_previous">
-      <Link
+      <span
         // to={linkWithoutNumber + pageNumber}
         onClick={() => {
           props.handlePageNumChange(pageNumber);
@@ -20,9 +20,10 @@ function tableNavElement(props) {
         data-dt-idx="0"
         tabIndex="0"
         className="page-link"
+        style={{ cursor: "pointer" }}
       >
         {linkText}
-      </Link>
+      </span>
     </li>
   );
 }

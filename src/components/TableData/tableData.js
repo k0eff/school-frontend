@@ -62,9 +62,6 @@ class TableData extends React.Component {
                         }
                       })
                     : ""}
-                  {/* <td className="sorting_1">{item._id}</td>
-                  <td>{item.value}</td>
-                  <td>{item.descr}</td> */}
                 </tr>
               ));
             }
