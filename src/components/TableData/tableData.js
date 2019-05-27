@@ -30,24 +30,20 @@ class TableData extends React.Component {
         <tbody>
           {(() => {
             let { data } = this.props;
-            console.log(data);
             if (
               !isEmpty(data) &&
               loading === false &&
               signal === true &&
               isEmpty(errors)
             ) {
-              console.log(data, 1);
               return data.map(item => (
                 <tr role="row" className="odd" key={item._id}>
-                  {console.log(data, 2)}
                   {!isEmpty(headers)
                     ? Object.keys(headers).map(headerIndex => {
                         let output = readObjectByString(
                           item,
                           headers[headerIndex].access
                         );
-                        console.log(headers[headerIndex].access);
                         if (
                           headers[headerIndex] &&
                           headers[headerIndex].date &&
