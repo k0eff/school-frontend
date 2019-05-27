@@ -37,27 +37,27 @@ class EduPlan extends Component {
     this.tableHeaders = [
       {
         name: "Идентификатор",
-        width: "16%",
+        width: "15%",
         access: "_id"
       },
       {
         name: "Име",
-        width: "42%",
+        width: "30%",
         access: "name"
       },
       {
         name: "Учебна година",
-        width: "42%",
+        width: "20%",
         access: "schoolingYear.value"
       },
       {
         name: "Клас буква",
-        width: "42%",
+        width: "15%",
         access: "classLetter.value"
       },
       {
         name: "Последно редактирано",
-        width: "42%",
+        width: "15%",
         access: "updatedAt",
         date: true
       }
