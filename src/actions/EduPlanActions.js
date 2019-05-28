@@ -3,7 +3,9 @@ import {
   EDUPLAN_LOADING,
   EDUPLAN_FINISH_SIGNAL,
   EDUPLAN_START_SIGNAL,
-  EDUPLAN_GET_EDUPLANS
+  EDUPLAN_GET_EDUPLANS,
+  EDUPLAN_ADD_EDUPLAN,
+  EDUPLAN_GET_PARAM_VALUES
 } from "./actionTypes";
 
 import axios from "axios";
@@ -34,6 +36,48 @@ export const getEduPlans = () => dispatch => {
     .then(res => {
       dispatch({
         type: EDUPLAN_GET_EDUPLANS,
+        payload: res.data
+      });
+      dispatch(finishSignal());
+    })
+    .catch(e => {
+      dispatch({
+        type: EDUPLAN_ERR,
+        payload: e.response.data
+      });
+    });
+};
+
+export const addEduPlan = data => dispatch => {
+  dispatch(startSignal());
+
+  const { name, schoolingYear, classLetter } = data; //will generate error if anything is missing
+
+  axios
+    .post("/api/eduPlan/eduPlan/", { name, schoolingYear, classLetter })
+    .then(res => {
+      dispatch({
+        type: EDUPLAN_ADD_EDUPLAN,
+        payload: res.data
+      });
+      dispatch(finishSignal());
+    })
+    .catch(e => {
+      dispatch({
+        type: EDUPLAN_ERR,
+        payload: e.response.data
+      });
+    });
+};
+
+export const getParamValuesbyParamName = paramName => dispatch => {
+  dispatch(startSignal());
+  axios
+    .get("/api/params/value/paramName/" + paramName)
+    .then(res => {
+      dispatch({
+        type: EDUPLAN_GET_PARAM_VALUES,
+        paramName,
         payload: res.data
       });
       dispatch(finishSignal());
