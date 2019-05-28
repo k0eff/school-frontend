@@ -150,8 +150,6 @@ class KeyValuePairs extends Component {
     } else {
       return 1;
     }
-
-    //TODO: check how the pageNum could be validated (upon the loaded data)
   });
 
   getPaginatedData = memoize(

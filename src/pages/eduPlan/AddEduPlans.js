@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import memoize from "memoize-one";
 import PropTypes from "prop-types";
 import {
   addEduPlan,
   startSignal,
   finishSignal
 } from "../../actions/EduPlanActions";
+
+import { shouldILoadParamData } from "../../actions/KeyToValueActions";
 
 import isEmpty from "../../utils/is-empty";
 
@@ -38,7 +41,8 @@ class AddEduPlans extends Component {
     this.state = {
       name: "",
       schoolingYear: "",
-      classLetter: ""
+      classLetter: "",
+      paramData: {}
     };
   }
 
@@ -61,6 +65,24 @@ class AddEduPlans extends Component {
     this.props.addValue(data);
   }
 
+  initParamDataUpdate = paramName =>
+    this.props.shouldILoadParamData(
+      paramName,
+      this.state.paramData,
+      this.state.cacheSecs
+    );
+
+  componentDidMount() {
+    this.initParamDataUpdate("SchoolingYear");
+    this.initParamDataUpdate("ClassLetter");
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (!isEmpty(props.keyValue.data))
+      return { ...state, paramData: props.keyValue.data };
+    else return null;
+  }
+
   render() {
     let { error, value, loading } = this.props.eduPlan.add;
     let success = false;
@@ -72,11 +94,33 @@ class AddEduPlans extends Component {
       }, 300);
     }
 
-    const options = [
-      { value: "chocolate", label: "Chocolate" },
-      { value: "strawberry", label: "Strawberry" },
-      { value: "vanilla", label: "Vanilla" }
-    ];
+    // const options = [
+    //   { value: "chocolate", label: "Chocolate" },
+    //   { value: "strawberry", label: "Strawberry" },
+    //   { value: "vanilla", label: "Vanilla" }
+    // ];
+
+    let classLetterOptions = [];
+    if (
+      !isEmpty(this.state.paramData) &&
+      !isEmpty(this.state.paramData.ClassLetter)
+    ) {
+      classLetterOptions = this.state.paramData.ClassLetter.data.map(item => {
+        return { value: item._id, label: item.value };
+      });
+    }
+
+    let schoolingYearOptions = [];
+    if (
+      !isEmpty(this.state.paramData) &&
+      !isEmpty(this.state.paramData.SchoolingYear)
+    ) {
+      schoolingYearOptions = this.state.paramData.SchoolingYear.data.map(
+        item => {
+          return { value: item._id, label: item.value };
+        }
+      );
+    }
 
     return (
       <MainWrapper>
@@ -113,13 +157,13 @@ class AddEduPlans extends Component {
                     />
                     <Select
                       name="schoolingYear"
-                      options={options}
+                      options={classLetterOptions}
                       className="w-25 mb-3"
                       placeholder="Избери..."
                     />
                     <Select
                       name="classLetter"
-                      options={options}
+                      options={schoolingYearOptions}
                       className="w-25"
                       placeholder="Избери..."
                     />
@@ -152,10 +196,11 @@ class AddEduPlans extends Component {
 }
 
 const mapStateToProps = state => ({
-  eduPlan: state.eduPlan
+  eduPlan: state.eduPlan,
+  keyValue: state.keyValue
 });
 
 export default connect(
   mapStateToProps,
-  { addEduPlan, startSignal, finishSignal }
+  { addEduPlan, startSignal, finishSignal, shouldILoadParamData }
 )(AddEduPlans);
