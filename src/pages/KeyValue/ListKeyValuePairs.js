@@ -3,6 +3,7 @@ import memoize from "memoize-one";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
+  shouldILoadParamData,
   checkIfParamExists,
   startSignal,
   finishSignal,
@@ -27,16 +28,11 @@ class KeyValuePairs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      keyValue: {
-        loading: false,
-        signal: false,
-        errors: {},
-        values: []
-      },
       linesPerPage: 10,
       pageNum: 1,
       data: [],
-      baseLink: "/KeyValue/list/"
+      baseLink: "/KeyValue/list/",
+      cacheSecs: 30
     };
 
     this.tableHeaders = {
@@ -158,27 +154,36 @@ class KeyValuePairs extends Component {
     //TODO: check how the pageNum could be validated (upon the loaded data)
   });
 
-  getPaginatedData = memoize(PaginationProps => {
-    let out = new tableNavigationCalc(
-      PaginationProps.initialData,
-      PaginationProps.linesPerPage,
-      PaginationProps.pageNum
-    ).all;
-    return out;
-  });
+  getPaginatedData = memoize(
+    ({ initialData, paramName, linesPerPage, pageNum }) => {
+      let requestedData;
 
-  memoizedCheckIfParamExists = memoize(paramName => {
-    this.props.checkIfParamExists(paramName);
-    return true;
-  });
+      if (initialData[paramName]) {
+        requestedData = initialData[paramName].data;
+      } else {
+        requestedData = [];
+      }
+      let out = new tableNavigationCalc(requestedData, linesPerPage, pageNum)
+        .all;
+      return out;
+    }
+  );
+
+  initDataUpdate = memoize(paramName =>
+    this.props.shouldILoadParamData(
+      paramName,
+      this.state.data,
+      this.state.cacheSecs
+    )
+  );
 
   handlePageNumChange(newPageNum) {
     this.setState({ pageNum: newPageNum });
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!isEmpty(props.keyValue.values))
-      return { ...state, data: props.keyValue.values };
+    if (!isEmpty(props.keyValue.data))
+      return { ...state, data: props.keyValue.data };
     else return null;
   }
 
@@ -193,13 +198,13 @@ class KeyValuePairs extends Component {
       props.startSignal();
       const paramName = this.getParamName(this.props.match.params.paramName);
 
-      this.memoizedCheckIfParamExists(paramName);
+      this.initDataUpdate(paramName);
     }
   }
 
   componentDidUpdate() {
     const paramName = this.getParamName(this.props.match.params.paramName);
-    this.memoizedCheckIfParamExists(paramName);
+    this.initDataUpdate(paramName);
   }
 
   render = () => {
@@ -217,16 +222,12 @@ class KeyValuePairs extends Component {
     let meta = {};
     let data = [];
     let tableNavHtml;
-
-    let paginationData = this.getPaginatedData(
-      {
-        initialData: this.props.keyValue.values,
-        linesPerPage: this.state.linesPerPage,
-        pageNum: pageNum
-      },
-      this.state.returnedDataFromGetPagData
-    );
-
+    let paginationData = this.getPaginatedData({
+      initialData: this.props.keyValue.data,
+      paramName,
+      linesPerPage: this.state.linesPerPage,
+      pageNum: pageNum
+    });
     meta = paginationData.stats;
     meta = { ...meta, link };
     data = paginationData.data;
@@ -291,6 +292,7 @@ class KeyValuePairs extends Component {
 }
 
 KeyValuePairs.propTypes = {
+  shouldILoadParamData: PropTypes.func.isRequired,
   checkIfParamExists: PropTypes.func.isRequired,
   startSignal: PropTypes.func.isRequired,
   finishSignal: PropTypes.func.isRequired,
@@ -303,5 +305,11 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { checkIfParamExists, startSignal, finishSignal, getParamValues }
+  {
+    shouldILoadParamData,
+    checkIfParamExists,
+    startSignal,
+    finishSignal,
+    getParamValues
+  }
 )(KeyValuePairs);

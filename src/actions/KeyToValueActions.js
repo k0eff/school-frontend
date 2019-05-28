@@ -29,6 +29,30 @@ export const loading = () => dispatch => {
   });
 };
 
+export const shouldILoadParamData = (
+  paramName,
+  currentStateKeyValueData,
+  cacheSecs
+) => dispatch => {
+  if (currentStateKeyValueData[paramName]) {
+    let currentDate = new Date();
+    let cacheExpiryDate = new Date(
+      currentDate.setSeconds(currentDate.getSeconds() - cacheSecs)
+    );
+    let lastUpdatedDate = new Date(
+      currentStateKeyValueData[paramName].lastUpdated
+    );
+
+    if (lastUpdatedDate > cacheExpiryDate) {
+      dispatch(finishSignal());
+    } else {
+      dispatch(checkIfParamExists(paramName));
+    }
+  } else {
+    dispatch(checkIfParamExists(paramName));
+  }
+};
+
 export const checkIfParamExists = paramName => dispatch => {
   dispatch(loading());
   axios
@@ -38,7 +62,7 @@ export const checkIfParamExists = paramName => dispatch => {
       // this.setState(tableData);
 
       if (!isEmpty(res.data)) {
-        dispatch(getParamValues(res.data[0]._id));
+        dispatch(getParamValues(res.data[0]._id, paramName));
       } else {
         dispatch({
           type: KEYVALUE_ERR,
@@ -54,13 +78,18 @@ export const checkIfParamExists = paramName => dispatch => {
     });
 };
 
-export const getParamValues = paramId => dispatch => {
+export const getParamValues = (paramId, paramName) => dispatch => {
   axios
     .get("/api/params/value/" + paramId)
     .then(res => {
+      let data = {
+        paramName,
+        data: res.data
+      };
+
       dispatch({
         type: KEYVALUE_GET_PARAM_VALUES,
-        payload: res.data
+        payload: data
       });
       dispatch(finishSignal());
     })

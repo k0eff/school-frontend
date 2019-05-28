@@ -13,7 +13,7 @@ import {
 const initialState = {
   loading: false,
   errors: {},
-  values: [],
+  data: {},
   signal: false,
   add: {
     loading: false,
@@ -51,7 +51,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         errors: {},
-        values: action.payload
+        data: {
+          ...state.data,
+          [action.payload.paramName]: {
+            lastUpdated: new Date(),
+            data: action.payload.data
+          }
+        }
       };
     case KEYVALUE_FINISH_SIGNAL:
       return {
