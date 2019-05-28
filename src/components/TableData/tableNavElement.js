@@ -19,7 +19,7 @@ function tableNavElement(props) {
         aria-controls="dataTable"
         data-dt-idx="0"
         tabIndex="0"
-        className="page-link"
+        className="page-link unselectable"
         style={{ cursor: "pointer" }}
       >
         {linkText}
