@@ -71,14 +71,6 @@ class EduPlan extends Component {
     this.handlePageNumChange.bind(this);
   }
 
-  getParamName = memoize(propsParamName => {
-    if (propsParamName !== undefined && !propsParamName.match(/[A-Za-z0-9]/)) {
-      return 1;
-    } else {
-      return propsParamName;
-    }
-  });
-
   getLink = memoize(({ paramName, baseLink }) => {
     return baseLink + paramName;
   });
@@ -134,7 +126,7 @@ class EduPlan extends Component {
 
   render = () => {
     const pageNum = this.getPageNum({
-      CurrPageNum: this.state.pageNum
+      pageNum: this.state.pageNum
     });
 
     const link = this.state.baseLink;
