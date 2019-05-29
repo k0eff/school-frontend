@@ -84,23 +84,3 @@ export const addEduPlan = data => dispatch => {
       });
     });
 };
-
-export const getParamValuesbyParamName = paramName => dispatch => {
-  dispatch(startSignal());
-  axios
-    .get("/api/params/value/paramName/" + paramName)
-    .then(res => {
-      dispatch({
-        type: EDUPLAN_GET_PARAM_VALUES,
-        paramName,
-        payload: res.data
-      });
-      dispatch(finishSignal());
-    })
-    .catch(e => {
-      dispatch({
-        type: EDUPLAN_ERR,
-        payload: e.response.data
-      });
-    });
-};
