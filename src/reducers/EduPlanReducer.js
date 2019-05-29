@@ -4,10 +4,13 @@ import {
   EDUPLAN_FINISH_SIGNAL,
   EDUPLAN_START_SIGNAL,
   EDUPLAN_GET_EDUPLANS,
-  EDUPLAN_ADD_EDUPLAN,
   EDUPLAN_GET_PARAM_VALUES,
   EDUPLAN_GET_PARAM_VALUES_SCHOOLINGYEAR,
-  EDUPLAN_GET_PARAM_VALUES_CLASSLETTER
+  EDUPLAN_GET_PARAM_VALUES_CLASSLETTER,
+  EDUPLAN_ADD_START_SIGNAL,
+  EDUPLAN_ADD_FINISH_SIGNAL,
+  EDUPLAN_ADD_EDUPLAN,
+  EDUPLAN_ADD_ERR
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -19,7 +22,7 @@ const initialState = {
     loading: false,
     signal: false,
     errors: {},
-    schoolingYear: []
+    status: {}
   }
 };
 
@@ -51,13 +54,6 @@ export default function(state = initialState, action) {
       };
 
     case EDUPLAN_GET_EDUPLANS:
-      return {
-        ...state,
-        loading: false,
-        signal: true,
-        data: action.payload
-      };
-    case EDUPLAN_ADD_EDUPLAN:
       return {
         ...state,
         loading: false,
@@ -96,8 +92,45 @@ export default function(state = initialState, action) {
             signal: false,
             error: {}
           };
-      }
+      } //EOF switch (action.paramName)
 
+    case EDUPLAN_ADD_START_SIGNAL:
+      return {
+        ...state,
+        add: {
+          ...state.add,
+          loading: true,
+          signal: false
+        }
+      };
+
+    case EDUPLAN_ADD_FINISH_SIGNAL:
+      return {
+        ...state,
+        add: {
+          ...state.add,
+          loading: false,
+          signal: true
+        }
+      };
+
+    case EDUPLAN_ADD_EDUPLAN:
+      return {
+        ...state,
+        add: {
+          ...state.add,
+          status: action.payload
+        }
+      };
+
+    case EDUPLAN_ADD_ERR:
+      return {
+        ...state,
+        add: {
+          ...state.add,
+          error: action.payload
+        }
+      };
     default:
       return initialState;
   }

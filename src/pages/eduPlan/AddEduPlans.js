@@ -5,7 +5,9 @@ import PropTypes from "prop-types";
 import {
   addEduPlan,
   startSignal,
-  finishSignal
+  finishSignal,
+  startSignalAdd,
+  finishSignalAdd
 } from "../../actions/EduPlanActions";
 
 import { shouldILoadParamData } from "../../actions/KeyToValueActions";
@@ -42,7 +44,8 @@ class AddEduPlans extends Component {
       name: "",
       classLetter: null,
       schoolingYear: null,
-      paramData: {}
+      paramData: {},
+      formError: {}
     };
 
     this.handleChange.bind(this);
@@ -57,20 +60,42 @@ class AddEduPlans extends Component {
 
   handleSelectChange = (paramValue, paramName) => {
     this.setState({ [paramName]: paramValue });
-    console.log(`Option selected:`, paramValue);
   };
 
   handleSubmit(e) {
     e.preventDefault();
     let { name, schoolingYear, classLetter } = this.state;
+    let error = {};
+
+    //validate data
+    if (!name.match(/.{1,}/)) error.name = "Моля, въведете стойност.";
+
+    if (
+      isEmpty(schoolingYear) ||
+      (!isEmpty(schoolingYear) && !schoolingYear.value.match(/.{1,}/))
+    )
+      //if schoolingYear has been edited and set
+      error.schoolingYear = "Моля, въведете стойност.";
+
+    if (
+      isEmpty(classLetter) ||
+      (isEmpty(classLetter) && !classLetter.value.match(/.{1,}/))
+    )
+      //if classLetter has been edited and set
+      error.classLetter = "Моля, въведете стойност.";
+
+    //break execution if there are errors
+    if (!isEmpty(error)) {
+      this.setState({ formError: error });
+      return;
+    }
 
     let data = {
       name,
-      schoolingYear,
-      classLetter
+      schoolingYear: schoolingYear.value,
+      classLetter: classLetter.value
     };
-
-    this.props.addValue(data);
+    this.props.addEduPlan(data);
   }
 
   initParamDataUpdate = paramName =>
@@ -92,10 +117,10 @@ class AddEduPlans extends Component {
   }
 
   render() {
-    let { error, value, loading } = this.props.eduPlan.add;
-    const { classLetter, schoolingYear } = this.state;
+    let { error, status, loading } = this.props.eduPlan.add;
+    let { classLetter, schoolingYear, formError } = this.state;
     let success = false;
-    if (!isEmpty(value)) {
+    if (!isEmpty(status)) {
       // New value has been added
       success = true;
       setTimeout(() => {
@@ -144,44 +169,52 @@ class AddEduPlans extends Component {
                   this.handleSubmit(e);
                 }}
               >
-                <div className="form-group">
-                  <CommonInput
-                    placeholder="Име*"
-                    name="name"
-                    onChange={this.handleChange.bind(this)}
-                    error={error && error.value ? error.value : ""}
-                    required={true}
-                    pattern=".+"
-                    title="Полето трябва да съдържа поне 1 символ"
-                  />
-                  <div className="form-group mt-2">
-                    <CommonTextArea
-                      placeholder="Кратко описание*"
-                      name="paramDescr"
+                <div className="form-group w-25">
+                  <div className="form-group">
+                    <CommonInput
+                      placeholder="Име*"
+                      name="name"
                       onChange={this.handleChange.bind(this)}
-                      error={error && error.descr ? error.value : ""}
-                      required={true}
+                      error={formError && formError.name ? formError.name : ""}
                       pattern=".+"
                       title="Полето трябва да съдържа поне 1 символ"
                     />
+                  </div>
+
+                  <div className="form-group mt-2">
+                    <span>Учебна година</span>
                     <Select
                       options={schoolingYearOptions}
-                      className="w-25 mb-3"
                       placeholder="Избери..."
                       onChange={value =>
                         this.handleSelectChange(value, "schoolingYear")
                       }
+                      required="true"
                       value={schoolingYear}
                     />
+                    {formError && formError.schoolingYear ? (
+                      <div className="text-danger">
+                        {formError.schoolingYear}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="form-group mt-2">
+                    <span>Клас буква</span>
                     <Select
                       options={classLetterOptions}
-                      className="w-25"
                       placeholder="Избери..."
                       onChange={value =>
                         this.handleSelectChange(value, "classLetter")
                       }
                       value={classLetter}
                     />
+                    {formError && formError.classLetter ? (
+                      <div className="text-danger">{formError.classLetter}</div>
+                    ) : (
+                      ""
+                    )}
                   </div>
 
                   <CommonFormErrorMsg
@@ -217,5 +250,12 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addEduPlan, startSignal, finishSignal, shouldILoadParamData }
+  {
+    addEduPlan,
+    startSignalAdd,
+    finishSignalAdd,
+    startSignal,
+    finishSignal,
+    shouldILoadParamData
+  }
 )(AddEduPlans);

@@ -4,8 +4,11 @@ import {
   EDUPLAN_FINISH_SIGNAL,
   EDUPLAN_START_SIGNAL,
   EDUPLAN_GET_EDUPLANS,
+  EDUPLAN_GET_PARAM_VALUES,
+  EDUPLAN_ADD_START_SIGNAL,
+  EDUPLAN_ADD_FINISH_SIGNAL,
   EDUPLAN_ADD_EDUPLAN,
-  EDUPLAN_GET_PARAM_VALUES
+  EDUPLAN_ADD_ERR
 } from "./actionTypes";
 
 import axios from "axios";
@@ -25,6 +28,18 @@ export const finishSignal = () => dispatch => {
 export const loading = () => dispatch => {
   dispatch({
     type: EDUPLAN_LOADING
+  });
+};
+
+export const startSignalAdd = () => dispatch => {
+  dispatch({
+    type: EDUPLAN_ADD_START_SIGNAL
+  });
+};
+
+export const finishSignalAdd = () => dispatch => {
+  dispatch({
+    type: EDUPLAN_ADD_FINISH_SIGNAL
   });
 };
 
@@ -49,7 +64,7 @@ export const getEduPlans = () => dispatch => {
 };
 
 export const addEduPlan = data => dispatch => {
-  dispatch(startSignal());
+  dispatch(startSignalAdd());
 
   const { name, schoolingYear, classLetter } = data; //will generate error if anything is missing
 
@@ -60,11 +75,11 @@ export const addEduPlan = data => dispatch => {
         type: EDUPLAN_ADD_EDUPLAN,
         payload: res.data
       });
-      dispatch(finishSignal());
+      dispatch(finishSignalAdd());
     })
     .catch(e => {
       dispatch({
-        type: EDUPLAN_ERR,
+        type: EDUPLAN_ADD_ERR,
         payload: e.response.data
       });
     });
