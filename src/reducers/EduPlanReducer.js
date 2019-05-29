@@ -10,8 +10,11 @@ import {
   EDUPLAN_ADD_START_SIGNAL,
   EDUPLAN_ADD_FINISH_SIGNAL,
   EDUPLAN_ADD_EDUPLAN,
-  EDUPLAN_ADD_ERR
+  EDUPLAN_ADD_ERR,
+  EDUPLAN_GET_EDUPLAN_SINGLE,
+  EDUPLAN_GET_EDUPLAN_SINGLE_ERROR
 } from "../actions/actionTypes";
+import isEmpty from "../utils/is-empty";
 
 const initialState = {
   loading: false,
@@ -23,6 +26,10 @@ const initialState = {
     signal: false,
     errors: {},
     status: {}
+  },
+  single: {
+    eduPlan: {},
+    errors: {}
   }
 };
 
@@ -131,7 +138,27 @@ export default function(state = initialState, action) {
           error: action.payload
         }
       };
+
+    case EDUPLAN_GET_EDUPLAN_SINGLE:
+      return {
+        ...state,
+        single: {
+          ...state.single,
+          eduPlan: action.payload
+        }
+      };
+
+    case EDUPLAN_GET_EDUPLAN_SINGLE_ERROR:
+      return {
+        ...state,
+        single: {
+          ...state.single,
+          errors: action.payload
+        }
+      };
+
     default:
-      return initialState;
+      if (isEmpty(state) || state === initialState) return initialState;
+      else return { ...state };
   }
 }

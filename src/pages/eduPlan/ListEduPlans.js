@@ -122,6 +122,10 @@ class EduPlan extends Component {
     ) {
       this.props.getEduPlans(); //load the data
     }
+
+
+
+    
   }
 
   render = () => {
@@ -155,7 +159,7 @@ class EduPlan extends Component {
             <p className="m-4">{this.pageTitle ? this.pageTitle.descr : ""}</p>
             <CommonCard
               linkText="Добави"
-              link={"/eduPlan/add/"}
+              link={"/eduPlan/addEdit/"}
               borderLeftClass="border-left-warning"
             />
           </MainBodyContainerWrapper>

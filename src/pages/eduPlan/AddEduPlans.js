@@ -7,7 +7,8 @@ import {
   startSignal,
   finishSignal,
   startSignalAdd,
-  finishSignalAdd
+  finishSignalAdd,
+  getEduPlanSingleById
 } from "../../actions/EduPlanActions";
 
 import { shouldILoadParamData } from "../../actions/KeyToValueActions";
@@ -65,6 +66,7 @@ class AddEduPlans extends Component {
   handleSubmit(e) {
     e.preventDefault();
     let { name, schoolingYear, classLetter } = this.state;
+    let eduPlanId = this.getEduPlanId();
     let error = {};
 
     //validate data
@@ -93,7 +95,8 @@ class AddEduPlans extends Component {
     let data = {
       name,
       schoolingYear: schoolingYear.value,
-      classLetter: classLetter.value
+      classLetter: classLetter.value,
+      eduPlanId
     };
     this.props.addEduPlan(data);
   }
@@ -108,18 +111,64 @@ class AddEduPlans extends Component {
   componentDidMount() {
     this.initParamDataUpdate("SchoolingYear");
     this.initParamDataUpdate("ClassLetter");
+    let eduPlanId = this.getEduPlanId();
+    if (!isEmpty(eduPlanId)) {
+      let eduPlansPreloaded = [];
+      if (!isEmpty(this.props.eduPlan.data))
+        eduPlansPreloaded = this.props.eduPlan.data;
+      this.props.getEduPlanSingleById(eduPlanId, eduPlansPreloaded);
+    }
+  }
+
+  componentDidUpdate() {
+    if (
+      this.getEduPlanSingle() &&
+      this.state.classLetter === null &&
+      this.state.schoolingYear === null
+    ) {
+      this.setState({
+        classLetter: {
+          label: this.getEduPlanSingle().classLetter.value,
+          value: this.getEduPlanSingle().classLetter._id
+        },
+        schoolingYear: {
+          label: this.getEduPlanSingle().schoolingYear.value,
+          value: this.getEduPlanSingle().schoolingYear._id
+        },
+        name: this.getEduPlanSingle().name
+      });
+    }
   }
 
   static getDerivedStateFromProps(props, state) {
+    let newState = null;
+
     if (!isEmpty(props.keyValue.data))
-      return { ...state, paramData: props.keyValue.data };
-    else return null;
+      newState = { ...newState, paramData: props.keyValue.data };
+
+    return newState;
   }
+
+  getEduPlanId = memoize(() => {
+    let eduPlanId = null;
+    if (this.props.match.params.eduPlanId)
+      eduPlanId = this.props.match.params.eduPlanId;
+    return eduPlanId;
+  });
+
+  getEduPlanSingle = () => {
+    let eduPlanSingle;
+    if (!isEmpty(this.props.eduPlan.single))
+      eduPlanSingle = this.props.eduPlan.single.eduPlan[0];
+    return eduPlanSingle;
+  };
 
   render() {
     let { error, status, loading } = this.props.eduPlan.add;
     let { classLetter, schoolingYear, formError } = this.state;
     let success = false;
+    let eduPlanId = this.getEduPlanId();
+
     if (!isEmpty(status)) {
       // New value has been added
       success = true;
@@ -127,12 +176,6 @@ class AddEduPlans extends Component {
         window.location.assign("/eduPlan/list/");
       }, 300);
     }
-
-    // const options = [
-    //   { value: "chocolate", label: "Chocolate" },
-    //   { value: "strawberry", label: "Strawberry" },
-    //   { value: "vanilla", label: "Vanilla" }
-    // ];
 
     let classLetterOptions = [];
     if (
@@ -162,7 +205,9 @@ class AddEduPlans extends Component {
 
         <TopBarWrapper>
           <MainBodyContainerWrapper pageTitle="Учебни планове">
-            <p className="m-4">Добавяне на учебен план</p>
+            <p className="m-4">
+              {eduPlanId ? "Редакция" : "Добавяне"} на учебен план
+            </p>
             <div className="p-5">
               <form
                 onSubmit={e => {
@@ -171,6 +216,14 @@ class AddEduPlans extends Component {
               >
                 <div className="form-group w-25">
                   <div className="form-group">
+                    {!isEmpty(this.props.eduPlan.single.errors) ? (
+                      <div className="alert bg-gradient-warning text-gray-700">
+                        Избраният учебен план не съществува. <br />
+                        Ще бъде добавен нов с въведените данни.
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     <CommonInput
                       placeholder="Име*"
                       name="name"
@@ -178,6 +231,7 @@ class AddEduPlans extends Component {
                       error={formError && formError.name ? formError.name : ""}
                       pattern=".+"
                       title="Полето трябва да съдържа поне 1 символ"
+                      value={this.state.name}
                     />
                   </div>
 
@@ -256,6 +310,7 @@ export default connect(
     finishSignalAdd,
     startSignal,
     finishSignal,
-    shouldILoadParamData
+    shouldILoadParamData,
+    getEduPlanSingleById
   }
 )(AddEduPlans);

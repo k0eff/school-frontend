@@ -11,6 +11,8 @@ import {
   EDUPLAN_ADD_EDUPLAN
 } from "../actions/actionTypes";
 
+import isEmpty from "../utils/is-empty";
+
 const initialState = {
   loading: false,
   errors: {},
@@ -97,6 +99,7 @@ export default function(state = initialState, action) {
       };
 
     default:
-      return initialState;
+      if (isEmpty(state) || state === initialState) return initialState;
+      else return { ...state };
   }
 }

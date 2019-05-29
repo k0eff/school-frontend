@@ -27,7 +27,7 @@ function App() {
           />
           <Route path="/KeyValue/add/:paramName" component={AddKeyValuePairs} />
           <Route path="/eduPlan/list/:pageNum?" component={ListEduPlans} />
-          <Route path="/eduPlan/add" component={AddEduPlans} />
+          <Route path="/eduPlan/addEdit/:eduPlanId?" component={AddEduPlans} />
         </Switch>
       </BrowserRouter>
     </Provider>
