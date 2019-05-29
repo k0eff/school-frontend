@@ -40,10 +40,13 @@ class AddEduPlans extends Component {
     super(props);
     this.state = {
       name: "",
-      schoolingYear: "",
-      classLetter: "",
+      classLetter: null,
+      schoolingYear: null,
       paramData: {}
     };
+
+    this.handleChange.bind(this);
+    this.handleSelectChange.bind(this);
   }
 
   handleChange(e) {
@@ -51,6 +54,11 @@ class AddEduPlans extends Component {
       [e.target.name]: e.target.value
     });
   }
+
+  handleSelectChange = (paramValue, paramName) => {
+    this.setState({ [paramName]: paramValue });
+    console.log(`Option selected:`, paramValue);
+  };
 
   handleSubmit(e) {
     e.preventDefault();
@@ -85,6 +93,7 @@ class AddEduPlans extends Component {
 
   render() {
     let { error, value, loading } = this.props.eduPlan.add;
+    const { classLetter, schoolingYear } = this.state;
     let success = false;
     if (!isEmpty(value)) {
       // New value has been added
@@ -156,16 +165,22 @@ class AddEduPlans extends Component {
                       title="Полето трябва да съдържа поне 1 символ"
                     />
                     <Select
-                      name="schoolingYear"
-                      options={classLetterOptions}
+                      options={schoolingYearOptions}
                       className="w-25 mb-3"
                       placeholder="Избери..."
+                      onChange={value =>
+                        this.handleSelectChange(value, "schoolingYear")
+                      }
+                      value={schoolingYear}
                     />
                     <Select
-                      name="classLetter"
-                      options={schoolingYearOptions}
+                      options={classLetterOptions}
                       className="w-25"
                       placeholder="Избери..."
+                      onChange={value =>
+                        this.handleSelectChange(value, "classLetter")
+                      }
+                      value={classLetter}
                     />
                   </div>
 
