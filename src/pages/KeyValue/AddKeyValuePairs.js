@@ -42,6 +42,8 @@ class AddKeyValuePairs extends Component {
       paramName: ""
     };
 
+    this.handleChange.bind(this);
+
     let { paramName } = this.props.match.params;
     if (paramName !== undefined && !paramName.match(/[A-Za-z0-9]/)) {
       this.state.paramName = "default";
@@ -97,21 +99,23 @@ class AddKeyValuePairs extends Component {
                   <CommonInput
                     placeholder="Име*"
                     name="paramValue"
-                    onChange={this.handleChange.bind(this)}
+                    onChange={e => this.handleChange(e)}
                     error={error && error.value ? error.value : ""}
                     required={true}
                     pattern=".+"
                     title="Полето трябва да съдържа поне 1 символ"
+                    value={this.state.paramValue}
                   />
                   <div className="form-group mt-2">
                     <CommonTextArea
                       placeholder="Кратко описание*"
                       name="paramDescr"
-                      onChange={this.handleChange.bind(this)}
+                      onChange={e => this.handleChange(e)}
                       error={error && error.descr ? error.value : ""}
                       required={true}
                       pattern=".+"
                       title="Полето трябва да съдържа поне 1 символ"
+                      value={this.state.paramDescr}
                     />
                   </div>
 

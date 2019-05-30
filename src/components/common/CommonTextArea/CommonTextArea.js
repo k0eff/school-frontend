@@ -16,6 +16,7 @@ function CommonInput(props) {
         pattern={props.pattern ? props.pattern : ""}
         title={props.title ? props.title : ""}
         rows={props.rows ? props.rows : "3"}
+        value={props.value ? props.value : ""}
       />
       <div
         className="text-danger"
