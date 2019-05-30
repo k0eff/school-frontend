@@ -41,6 +41,11 @@ class EduPlanData extends Component {
         access: "_id"
       },
       {
+        name: "Учебен план",
+        width: "30%",
+        access: "eduPlan.name"
+      },
+      {
         name: "Предмет",
         width: "30%",
         access: "subject.value"
