@@ -150,8 +150,8 @@ class AddEduPlans extends Component {
   }
 
   getEduPlanId = memoize(() => {
-    let eduPlanId = null;
-    if (this.props.match.params.eduPlanId)
+    let eduPlanId = "";
+    if (!isEmpty(this.props.match.params.eduPlanId))
       eduPlanId = this.props.match.params.eduPlanId;
     return eduPlanId;
   });
