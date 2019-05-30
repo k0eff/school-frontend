@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import memoize from "memoize-one";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getEduPlanData } from "../../actions/EduPlanActions";
+import { getEduPlanDataByEduPlanId } from "../../actions/EduPlanActions";
 
 import isEmpty from "../../utils/is-empty";
 
@@ -124,7 +124,7 @@ class EduPlanData extends Component {
       isEmpty(props.eduPlan.error) &&
       isEmpty(props.eduPlan.params)
     ) {
-      this.props.getEduPlanData(eduPlanId); //load the data
+      this.props.getEduPlanDataByEduPlanId(eduPlanId); //load the data
     }
   }
 
@@ -132,6 +132,8 @@ class EduPlanData extends Component {
     const pageNum = this.getPageNum({
       pageNum: this.state.pageNum
     });
+
+    let eduPlanId = this.getEduPlanId();
 
     const link = this.state.baseLink;
 
@@ -159,7 +161,7 @@ class EduPlanData extends Component {
             <p className="m-4">{this.pageTitle ? this.pageTitle.descr : ""}</p>
             <CommonCard
               linkText="Добави"
-              link={"/eduPlanData/addEdit/"}
+              link={"/eduPlanData/addEdit/" + eduPlanId}
               borderLeftClass="border-left-warning"
             />
           </MainBodyContainerWrapper>
@@ -199,7 +201,7 @@ class EduPlanData extends Component {
 }
 
 EduPlanData.propTypes = {
-  getEduPlanData: PropTypes.func.isRequired
+  getEduPlanDataByEduPlanId: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -208,5 +210,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getEduPlanData }
+  { getEduPlanDataByEduPlanId }
 )(EduPlanData);

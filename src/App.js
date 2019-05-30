@@ -15,6 +15,7 @@ import ListEduPlans from "./pages/eduPlan/ListEduPlans";
 import AddEduPlans from "./pages/eduPlan/AddEduPlans";
 
 import ListEduPlanData from "./pages/eduPlan/ListEduPlanData";
+import AddEduPlanData from "./pages/eduPlan/AddEduPlanData";
 
 function App() {
   return (
@@ -34,6 +35,10 @@ function App() {
           <Route
             path="/eduPlanData/list/:eduPlanId/:pageNum?"
             component={ListEduPlanData}
+          />
+          <Route
+            path="/eduPlanData/addEdit/:eduPlanId/:eduPlanDataId?"
+            component={AddEduPlanData}
           />
         </Switch>
       </BrowserRouter>

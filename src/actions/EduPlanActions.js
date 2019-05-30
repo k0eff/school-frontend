@@ -50,7 +50,6 @@ export const finishSignalAdd = () => dispatch => {
 
 export const getEduPlans = () => dispatch => {
   startSignal();
-  debugger;
   axios
     .get("/api/eduPlan/eduPlan/")
     .then(res => {
@@ -145,11 +144,39 @@ export const getEduPlanSingleById = (
 
 // eduPlanData
 
-export const getEduPlanData = eduPlanId => dispatch => {
+export const getEduPlanDataByEduPlanId = eduPlanId => dispatch => {
   startSignal();
 
   axios
-    .get("/api/eduPlanData/" + eduPlanId)
+    .get("/api/eduPlanData/byEduPlanId/" + eduPlanId)
+    .then(res => {
+      dispatch({
+        type: EDUPLAN_GET_EDUPLANDATA,
+        payload: res.data
+      });
+      dispatch(finishSignal());
+    })
+    .catch(e => {
+      dispatch({
+        type: EDUPLAN_ERR,
+        payload: e.response.data
+      });
+    });
+};
+
+export const getEduPlanDataByEduPlanDataIdAndEduPlanId = (
+  eduPlanId,
+  eduPlanDataId
+) => dispatch => {
+  startSignal();
+
+  axios
+    .get(
+      "/api/eduPlanData/byEduPlanIdAndEduPlanDataId/" +
+        eduPlanId +
+        "/" +
+        eduPlanDataId
+    )
     .then(res => {
       dispatch({
         type: EDUPLAN_GET_EDUPLANDATA,
@@ -168,11 +195,13 @@ export const getEduPlanData = eduPlanId => dispatch => {
 export const addEduPlanData = data => dispatch => {
   dispatch(startSignalAdd());
 
-  let { name, classNumber, subject, eduPlanId } = data; //will generate error if anything is missing
+  let { classHours, classNumber, subject, eduPlanDataId, eduPlanId } = data; //will generate error if anything is missing
 
   axios
-    .post("/api/eduPlanData/" + eduPlanId, {
-      name,
+    .post("/api/eduPlanData/" + eduPlanId + "/" + eduPlanDataId, {
+      eduPlanId,
+      eduPlanDataId,
+      classHours,
       classNumber,
       subject
     })

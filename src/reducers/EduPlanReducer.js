@@ -13,7 +13,8 @@ import {
   EDUPLAN_ADD_ERR,
   EDUPLAN_GET_EDUPLAN_SINGLE,
   EDUPLAN_GET_EDUPLAN_SINGLE_ERROR,
-  EDUPLAN_GET_EDUPLANDATA
+  EDUPLAN_GET_EDUPLANDATA,
+  EDUPLAN_ADD_EDUPLANDATA
 } from "../actions/actionTypes";
 import isEmpty from "../utils/is-empty";
 
@@ -168,6 +169,15 @@ export default function(state = initialState, action) {
         eduPlanData: {
           ...state.eduPlanData,
           eduPlanData: action.payload
+        }
+      };
+
+    case EDUPLAN_ADD_EDUPLANDATA:
+      return {
+        ...state,
+        add: {
+          ...state.add,
+          status: action.payload
         }
       };
 
