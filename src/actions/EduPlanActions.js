@@ -10,7 +10,9 @@ import {
   EDUPLAN_ADD_EDUPLAN,
   EDUPLAN_ADD_ERR,
   EDUPLAN_GET_EDUPLAN_SINGLE,
-  EDUPLAN_GET_EDUPLAN_SINGLE_ERROR
+  EDUPLAN_GET_EDUPLAN_SINGLE_ERROR,
+  EDUPLAN_ADD_EDUPLANDATA,
+  EDUPLAN_GET_EDUPLANDATA
 } from "./actionTypes";
 
 import axios from "axios";
@@ -48,7 +50,7 @@ export const finishSignalAdd = () => dispatch => {
 
 export const getEduPlans = () => dispatch => {
   startSignal();
-
+  debugger;
   axios
     .get("/api/eduPlan/eduPlan/")
     .then(res => {
@@ -139,4 +141,52 @@ export const getEduPlanSingleById = (
         });
       });
   }
+};
+
+// eduPlanData
+
+export const getEduPlanData = eduPlanId => dispatch => {
+  startSignal();
+
+  axios
+    .get("/api/eduPlanData/" + eduPlanId)
+    .then(res => {
+      dispatch({
+        type: EDUPLAN_GET_EDUPLANDATA,
+        payload: res.data
+      });
+      dispatch(finishSignal());
+    })
+    .catch(e => {
+      dispatch({
+        type: EDUPLAN_ERR,
+        payload: e.response.data
+      });
+    });
+};
+
+export const addEduPlanData = data => dispatch => {
+  dispatch(startSignalAdd());
+
+  let { name, classNumber, subject, eduPlanId } = data; //will generate error if anything is missing
+
+  axios
+    .post("/api/eduPlanData/" + eduPlanId, {
+      name,
+      classNumber,
+      subject
+    })
+    .then(res => {
+      dispatch({
+        type: EDUPLAN_ADD_EDUPLANDATA,
+        payload: res.data
+      });
+      dispatch(finishSignalAdd());
+    })
+    .catch(e => {
+      dispatch({
+        type: EDUPLAN_ADD_ERR,
+        payload: e.response.data
+      });
+    });
 };

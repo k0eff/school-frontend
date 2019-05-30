@@ -12,7 +12,8 @@ import {
   EDUPLAN_ADD_EDUPLAN,
   EDUPLAN_ADD_ERR,
   EDUPLAN_GET_EDUPLAN_SINGLE,
-  EDUPLAN_GET_EDUPLAN_SINGLE_ERROR
+  EDUPLAN_GET_EDUPLAN_SINGLE_ERROR,
+  EDUPLAN_GET_EDUPLANDATA
 } from "../actions/actionTypes";
 import isEmpty from "../utils/is-empty";
 
@@ -29,6 +30,10 @@ const initialState = {
   },
   single: {
     eduPlan: {},
+    errors: {}
+  },
+  eduPlanData: {
+    eduPlanData: {},
     errors: {}
   }
 };
@@ -154,6 +159,15 @@ export default function(state = initialState, action) {
         single: {
           ...state.single,
           errors: action.payload
+        }
+      };
+
+    case EDUPLAN_GET_EDUPLANDATA:
+      return {
+        ...state,
+        eduPlanData: {
+          ...state.eduPlanData,
+          eduPlanData: action.payload
         }
       };
 
