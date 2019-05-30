@@ -122,10 +122,6 @@ class EduPlan extends Component {
     ) {
       this.props.getEduPlans(); //load the data
     }
-
-
-
-    
   }
 
   render = () => {
@@ -139,7 +135,7 @@ class EduPlan extends Component {
     let data = [];
 
     let paginationData = this.getPaginatedData({
-      initialData: this.props.eduPlan.data,
+      initialData: this.state.data,
       linesPerPage: this.state.linesPerPage,
       pageNum: pageNum
     });
