@@ -154,7 +154,7 @@ class EduPlanData extends Component {
             <p className="m-4">{this.pageTitle ? this.pageTitle.descr : ""}</p>
             <CommonCard
               linkText="Добави"
-              link={"/eduPlan/addEdit/"}
+              link={"/eduPlanData/addEdit/"}
               borderLeftClass="border-left-warning"
             />
           </MainBodyContainerWrapper>
