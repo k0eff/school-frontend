@@ -122,6 +122,7 @@ class AddEduPlanData extends Component {
 
   componentDidUpdate() {
     if (
+      this.getEduPlanDataId() &&
       this.getEduPlanData() &&
       this.state.classNumber === null &&
       this.state.subject === null
