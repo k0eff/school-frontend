@@ -188,7 +188,6 @@ class KeyValuePairs extends Component {
   componentDidMount() {
     let { props } = this;
     if (
-      props.keyValue.signal === false &&
       props.keyValue.loading === false &&
       isEmpty(props.keyValue.error) &&
       isEmpty(props.keyValue.params)

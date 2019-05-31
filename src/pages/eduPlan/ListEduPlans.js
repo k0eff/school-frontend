@@ -128,7 +128,6 @@ class EduPlan extends Component {
   componentDidMount() {
     let { props } = this;
     if (
-      props.eduPlan.signal === false &&
       props.eduPlan.loading === false &&
       isEmpty(props.eduPlan.error) &&
       isEmpty(props.eduPlan.params)

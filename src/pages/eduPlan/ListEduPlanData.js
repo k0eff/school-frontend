@@ -119,10 +119,9 @@ class EduPlanData extends Component {
     let { props } = this;
     let eduPlanId = this.getEduPlanId();
     if (
-      props.eduPlan.signal === false &&
       props.eduPlan.loading === false &&
       isEmpty(props.eduPlan.error) &&
-      isEmpty(props.eduPlan.params)
+      isEmpty(props.eduPlan.eduPlanData.eduPlanData)
     ) {
       this.props.getEduPlanDataByEduPlanId(eduPlanId); //load the data
     }
