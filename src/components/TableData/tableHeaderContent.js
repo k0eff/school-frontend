@@ -31,9 +31,7 @@ function tableHeaderContent(props) {
 }
 
 tableHeaderContent.propTypes = {
-  headers: PropTypes.shape({
-    
-  })
+  headers: PropTypes.array
 };
 
 export default tableHeaderContent;

@@ -1,17 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import Spinner from "../../components/common/Spinner/spinner";
 import TableHeaderContent from "./tableHeaderContent";
 import TableFooterContent from "./tableFooterContent";
 import isEmpty from "../../utils/is-empty";
 import readObjectByString from "../../utils/readObjectByString";
 import format from "date-format";
+import evaluateStrLiteral from "../../utils/evaluateStrLiteral";
 
 class TableData extends React.Component {
   tableBody = {};
 
   render() {
-    let { errors, signal, loading, headers, data } = this.props;
+    let {
+      errors,
+      signal,
+      loading,
+      headers,
+      data,
+      additionalParams
+    } = this.props;
 
     return (
       <table
@@ -39,10 +48,22 @@ class TableData extends React.Component {
                 <tr role="row" className="odd" key={item._id}>
                   {!isEmpty(headers)
                     ? Object.keys(headers).map(headerIndex => {
+                        if (!isEmpty(additionalParams)) {
+                          //join the data object and the additionalParams object
+                          item = { ...item, ...additionalParams };
+                        }
+
                         let output = readObjectByString(
                           item,
                           headers[headerIndex].access
                         );
+
+                        let link = headers[headerIndex].link;
+
+                        if (!isEmpty(link)) {
+                          link = evaluateStrLiteral(link, item);
+                        } //process the supplied link parameter from props. It may contain parameters in each data line or in additional params. All possible params are join in item
+
                         if (
                           headers[headerIndex] &&
                           headers[headerIndex].date &&
@@ -59,7 +80,11 @@ class TableData extends React.Component {
                         } else {
                           return (
                             <td key={item._id + "_td_" + headerIndex}>
-                              {output}
+                              {link ? ( // add a link if it has been supplied
+                                <Link to={link}>{output}</Link>
+                              ) : (
+                                output
+                              )}
                             </td>
                           );
                         }
@@ -110,15 +135,18 @@ class TableData extends React.Component {
 }
 
 TableData.propTypes = {
-  data: PropTypes.arrayOf(
+  headers: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      width: PropTypes.string.isRequired,
-      access: PropTypes.string.isRequired,
-      date: PropTypes.bool
-    }).isRequired
-  ),
-  headers: PropTypes.object.isRequired
+      //headers should be an array casted to an object
+      width: PropTypes.string,
+      access: PropTypes.string,
+      name: PropTypes.string,
+      date: PropTypes.bool,
+      link: PropTypes.string, //link is to be added in order to add it to the specified cell
+      additionalParams: PropTypes.object //additional params serve to be added to each line of data in order to evaluate them when needed
+      // Make sure none of the properties in the supplied additional params object === any of the properties of the data object
+    })
+  )
 };
 
 export default TableData;

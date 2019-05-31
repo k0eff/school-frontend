@@ -31,14 +31,17 @@ class EduPlan extends Component {
       linesPerPage: 10,
       pageNum: 1,
       data: [],
-      baseLink: "/eduPlan/list/"
+      baseLink: "/eduPlan/list/",
+      baseLinkAddEdit: "/eduPlan/addEdit/"
     };
 
     this.tableHeaders = [
       {
         name: "Идентификатор",
         width: "15%",
-        access: "_id"
+        access: "_id",
+        link: this.state.baseLinkAddEdit + "$(_id)",
+        additionalParams: {}
       },
       {
         name: "Име",
@@ -177,7 +180,7 @@ class EduPlan extends Component {
                     <div className="col-sm-12">
                       <TableData
                         data={data}
-                        headers={{ ...this.tableHeaders }}
+                        headers={this.tableHeaders}
                         errors={this.props.eduPlan.errors}
                         signal={this.props.eduPlan.signal}
                         loading={this.props.eduPlan.loading}
