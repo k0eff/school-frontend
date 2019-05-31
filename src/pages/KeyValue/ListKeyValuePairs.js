@@ -277,7 +277,7 @@ class KeyValuePairs extends Component {
             </p>
             <CommonCard
               linkText="Добави"
-              link={"/KeyValue/add/" + paramName}
+              link={this.state.baseLinkAddEdit + paramName}
               borderLeftClass="border-left-warning"
             />
           </MainBodyContainerWrapper>

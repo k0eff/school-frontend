@@ -42,6 +42,25 @@ class AddKeyValuePairs extends Component {
       paramName: ""
     };
 
+    this.pageTitles = {
+      Subject: {
+        title: "Предмети",
+        descr: "Списък с добавени предмети"
+      },
+      ClassNumber: {
+        title: "Клас номер",
+        descr: "Списък с добавени номера на класове"
+      },
+      ClassLetter: {
+        title: "Клас буква",
+        descr: "Списък с добавени буквени обозначения на класове"
+      },
+      SchoolingYear: {
+        title: "Учебна година",
+        descr: "Списък с добавени учебни години"
+      }
+    };
+
     this.handleChange.bind(this);
 
     let { paramName } = this.props.match.params;
@@ -73,6 +92,7 @@ class AddKeyValuePairs extends Component {
 
   render() {
     let { error, value, loading } = this.props.keyValue.add;
+    let { paramName } = this.state;
     let success = false;
     if (!isEmpty(value)) {
       // New value has been added
@@ -87,8 +107,16 @@ class AddKeyValuePairs extends Component {
         <Menu />
 
         <TopBarWrapper>
-          <MainBodyContainerWrapper pageTitle="Предмети">
-            <p className="m-4">Добавяне на предмет</p>
+          <MainBodyContainerWrapper
+            pageTitle={
+              this.pageTitles[paramName] ? this.pageTitles[paramName].title : ""
+            }
+          >
+            <p className="m-4">
+              {this.pageTitles[paramName]
+                ? this.pageTitles[paramName].descr
+                : ""}
+            </p>
             <div className="p-5">
               <form
                 onSubmit={e => {
