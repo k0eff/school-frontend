@@ -13,14 +13,7 @@ class TableData extends React.Component {
   tableBody = {};
 
   render() {
-    let {
-      errors,
-      signal,
-      loading,
-      headers,
-      data,
-      additionalParams
-    } = this.props;
+    let { errors, signal, loading, headers, data } = this.props;
 
     return (
       <table
@@ -48,11 +41,13 @@ class TableData extends React.Component {
                 <tr role="row" className="odd" key={item._id}>
                   {!isEmpty(headers)
                     ? Object.keys(headers).map(headerIndex => {
+                        let additionalParams =
+                          headers[headerIndex].additionalParams;
+
                         if (!isEmpty(additionalParams)) {
                           //join the data object and the additionalParams object
                           item = { ...item, ...additionalParams };
                         }
-
                         let output = readObjectByString(
                           item,
                           headers[headerIndex].access

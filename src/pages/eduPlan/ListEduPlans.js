@@ -32,7 +32,8 @@ class EduPlan extends Component {
       pageNum: 1,
       data: [],
       baseLink: "/eduPlan/list/",
-      baseLinkAddEdit: "/eduPlan/addEdit/"
+      baseLinkAddEdit: "/eduPlan/addEdit/",
+      baseLinkListEduPlanData: "/eduPlanData/list/"
     };
 
     this.tableHeaders = [
@@ -46,7 +47,16 @@ class EduPlan extends Component {
       {
         name: "Име",
         width: "30%",
-        access: "name"
+        access: "name",
+        link: this.state.baseLinkAddEdit + "$(_id)",
+        additionalParams: {}
+      },
+      {
+        name: "Предмети",
+        width: "15%",
+        access: "eduPlanDatacustomField",
+        link: this.state.baseLinkListEduPlanData + "$(_id)",
+        additionalParams: { eduPlanDatacustomField: "Редактирай" }
       },
       {
         name: "Учебна година",
