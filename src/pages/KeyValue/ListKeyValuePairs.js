@@ -272,7 +272,7 @@ class KeyValuePairs extends Component {
                     <div className="col-sm-12">
                       <TableData
                         data={data}
-                        headers={{ ...this.tableHeaders[paramName] }}
+                        headers={this.tableHeaders[paramName]}
                         errors={this.props.keyValue.errors}
                         signal={this.props.keyValue.signal}
                         loading={this.props.keyValue.loading}

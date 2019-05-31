@@ -183,7 +183,7 @@ class EduPlanData extends Component {
                     <div className="col-sm-12">
                       <TableData
                         data={data}
-                        headers={{ ...this.tableHeaders }}
+                        headers={this.tableHeaders}
                         errors={this.props.eduPlan.errors}
                         signal={this.props.eduPlan.signal}
                         loading={this.props.eduPlan.loading}
