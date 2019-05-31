@@ -48,6 +48,7 @@ class TableData extends React.Component {
                           //join the data object and the additionalParams object
                           item = { ...item, ...additionalParams };
                         }
+
                         let output = readObjectByString(
                           item,
                           headers[headerIndex].access
@@ -56,7 +57,11 @@ class TableData extends React.Component {
                         let link = headers[headerIndex].link;
 
                         if (!isEmpty(link)) {
-                          link = evaluateStrLiteral(link, item);
+                          link = evaluateStrLiteral(
+                            link,
+                            item,
+                            readObjectByString
+                          );
                         } //process the supplied link parameter from props. It may contain parameters in each data line or in additional params. All possible params are join in item
 
                         if (

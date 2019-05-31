@@ -31,24 +31,31 @@ class EduPlanData extends Component {
       linesPerPage: 10,
       pageNum: 1,
       data: [],
-      baseLink: "/eduPlanData/list/"
+      baseLink: "/eduPlanData/list/",
+      baseLinkAddEdit: "/eduPlanData/addEdit/"
     };
 
     this.tableHeaders = [
       {
         name: "Идентификатор",
         width: "15%",
-        access: "_id"
+        access: "_id",
+        link: this.state.baseLinkAddEdit + "$(eduPlan._id)/$(_id)",
+        additionalParams: {}
       },
       {
         name: "Учебен план",
         width: "30%",
-        access: "eduPlan.name"
+        access: "eduPlan.name",
+        link: this.state.baseLinkAddEdit + "$(eduPlan._id)/$(_id)",
+        additionalParams: {}
       },
       {
         name: "Предмет",
         width: "30%",
-        access: "subject.value"
+        access: "subject.value",
+        link: this.state.baseLinkAddEdit + "$(eduPlan._id)/$(_id)",
+        additionalParams: {}
       },
       {
         name: "Клас номер",
