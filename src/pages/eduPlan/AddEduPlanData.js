@@ -111,13 +111,11 @@ class AddEduPlanData extends Component {
     let eduPlanId = this.getEduPlanId();
     let eduPlanDataId = this.getEduPlanDataId();
 
-    if (!isEmpty(eduPlanDataId)) {
-      this.props.getEduPlanDataByEduPlanDataIdAndEduPlanId(
-        eduPlanId,
-        eduPlanDataId
-      );
-      //TODO: preloading eduPlans from reducer
-    }
+    this.props.getEduPlanDataByEduPlanDataIdAndEduPlanId(
+      eduPlanId,
+      eduPlanDataId
+    );
+    //TODO: preloading eduPlans from reducer
   }
 
   componentDidUpdate() {
@@ -165,10 +163,19 @@ class AddEduPlanData extends Component {
   });
 
   getEduPlanData = () => {
-    let eduPlanSingle;
-    if (!isEmpty(this.props.eduPlan.single))
-      eduPlanSingle = this.props.eduPlan.eduPlanData.eduPlanData[0];
-    return eduPlanSingle;
+    let eduPlanDataId = this.getEduPlanDataId();
+    let eduPlanDataSingle;
+    if (
+      !isEmpty(eduPlanDataId) &&
+      !isEmpty(this.props.eduPlan.eduPlanData.eduPlanData)
+    )
+      eduPlanDataSingle = this.props.eduPlan.eduPlanData.eduPlanData.find(
+        item => {
+          return item._id === eduPlanDataId;
+        }
+      );
+
+    return eduPlanDataSingle;
   };
 
   render() {

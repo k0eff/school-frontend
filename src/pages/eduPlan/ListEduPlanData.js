@@ -123,15 +123,10 @@ class EduPlanData extends Component {
   }
 
   componentDidMount() {
-    let { props } = this;
     let eduPlanId = this.getEduPlanId();
-    if (
-      props.eduPlan.loading === false &&
-      isEmpty(props.eduPlan.error) &&
-      isEmpty(props.eduPlan.eduPlanData.eduPlanData)
-    ) {
+ 
       this.props.getEduPlanDataByEduPlanId(eduPlanId); //load the data
-    }
+ 
   }
 
   render = () => {
