@@ -32,6 +32,7 @@ class KeyValuePairs extends Component {
       pageNum: 1,
       data: [],
       baseLink: "/KeyValue/list/",
+      baseLinkAddEdit: "/KeyValue/addEdit/",
       cacheSecs: 30
     };
 
@@ -40,68 +41,92 @@ class KeyValuePairs extends Component {
         {
           name: "Идентификатор",
           width: "16%",
-          access: "_id"
+          access: "_id",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "Subject" }
         },
         {
           name: "Стойност",
           width: "42%",
-          access: "value"
+          access: "value",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "Subject" }
         },
         {
           name: "Описание",
           width: "42%",
-          access: "descr"
+          access: "descr",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "Subject" }
         }
       ],
       ClassNumber: [
         {
           name: "Идентификатор",
           width: "16%",
-          access: "_id"
+          access: "_id",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "ClassNumber" }
         },
         {
           name: "Стойност",
           width: "42%",
-          access: "value"
+          access: "value",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "ClassNumber" }
         },
         {
           name: "Описание",
           width: "42%",
-          access: "descr"
+          access: "descr",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "ClassNumber" }
         }
       ],
       ClassLetter: [
         {
           name: "Идентификатор",
           width: "16%",
-          access: "_id"
+          access: "_id",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "ClassLetter" }
         },
         {
           name: "Стойност",
           width: "42%",
-          access: "value"
+          access: "value",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "ClassLetter" }
         },
         {
           name: "Описание",
           width: "42%",
-          access: "descr"
+          access: "descr",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "ClassLetter" }
         }
       ],
       SchoolingYear: [
         {
           name: "Идентификатор",
           width: "16%",
-          access: "_id"
+          access: "_id",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "SchoolingYear" }
         },
         {
           name: "Стойност",
           width: "42%",
-          access: "value"
+          access: "value",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "SchoolingYear" }
         },
         {
           name: "Описание",
           width: "42%",
-          access: "descr"
+          access: "descr",
+          link: this.state.baseLinkAddEdit + "$(paramNameForLink)/$(_id)",
+          additionalParams: { paramNameForLink: "SchoolingYear" }
         }
       ]
     };

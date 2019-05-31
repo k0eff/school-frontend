@@ -28,7 +28,10 @@ function App() {
             path="/KeyValue/list/:paramName/:pageNum?"
             component={ListKeyValuePairs}
           />
-          <Route path="/KeyValue/add/:paramName" component={AddKeyValuePairs} />
+          <Route
+            path="/KeyValue/addEdit/:paramName/:id?"
+            component={AddKeyValuePairs}
+          />
           <Route path="/eduPlan/list/:pageNum?" component={ListEduPlans} />
           <Route path="/eduPlan/addEdit/:eduPlanId?" component={AddEduPlans} />
 
