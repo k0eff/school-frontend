@@ -14,9 +14,6 @@ import isEmpty from "../../utils/is-empty";
 
 // load custom components
 import MainBodyContainerWrapper from "../../components/wrappers/mainBodyContainerWrapper";
-import MainWrapper from "../../components/wrappers/mainWrapper";
-import Menu from "../../components/menu/menu";
-import TopBarWrapper from "../../components/wrappers/topBarWrapper";
 import TableData from "../../components/TableData/tableData";
 import TableNav from "../../components/TableData/tableNav";
 import TableSearch from "../../components/TableData/tableSearch";
@@ -261,54 +258,48 @@ class KeyValuePairs extends Component {
       />
     );
     return (
-      <MainWrapper>
-        <Menu />
+      <React.Fragment>
+        <MainBodyContainerWrapper
+          pageTitle={
+            this.pageTitles[paramName] ? this.pageTitles[paramName].title : ""
+          }
+        >
+          <p className="m-4">
+            {this.pageTitles[paramName] ? this.pageTitles[paramName].descr : ""}
+          </p>
+          <CommonCard
+            linkText="Добави"
+            link={this.state.baseLinkAddEdit + paramName}
+            borderLeftClass="border-left-warning"
+          />
+        </MainBodyContainerWrapper>
 
-        <TopBarWrapper>
-          <MainBodyContainerWrapper
-            pageTitle={
-              this.pageTitles[paramName] ? this.pageTitles[paramName].title : ""
-            }
-          >
-            <p className="m-4">
-              {this.pageTitles[paramName]
-                ? this.pageTitles[paramName].descr
-                : ""}
-            </p>
-            <CommonCard
-              linkText="Добави"
-              link={this.state.baseLinkAddEdit + paramName}
-              borderLeftClass="border-left-warning"
-            />
-          </MainBodyContainerWrapper>
-
-          <div className="card shadow mb-4">
-            <TableSearch />
-            <div className="card-body">
-              {tableNavHtml}
-              <div className="table-responsive">
-                <div
-                  id="dataTable_wrapper"
-                  className="dataTables_wrapper dt-bootstrap4"
-                  style={{ marginRight: "20px" }}
-                >
-                  <div className="row">
-                    <div className="col-sm-12">
-                      <TableData
-                        data={data}
-                        headers={this.tableHeaders[paramName]}
-                        errors={this.props.keyValue.errors}
-                        signal={this.props.keyValue.signal}
-                        loading={this.props.keyValue.loading}
-                      />
-                    </div>
+        <div className="card shadow mb-4">
+          <TableSearch />
+          <div className="card-body">
+            {tableNavHtml}
+            <div className="table-responsive">
+              <div
+                id="dataTable_wrapper"
+                className="dataTables_wrapper dt-bootstrap4"
+                style={{ marginRight: "20px" }}
+              >
+                <div className="row">
+                  <div className="col-sm-12">
+                    <TableData
+                      data={data}
+                      headers={this.tableHeaders[paramName]}
+                      errors={this.props.keyValue.errors}
+                      signal={this.props.keyValue.signal}
+                      loading={this.props.keyValue.loading}
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </TopBarWrapper>
-      </MainWrapper>
+        </div>
+      </React.Fragment>
     );
   };
 }
