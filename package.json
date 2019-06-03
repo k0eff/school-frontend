@@ -12,6 +12,7 @@
     "babel-loader": "8.0.5",
     "date-format": "2.0.0",
     "http-proxy-middleware": "0.19.1",
+    "identity-obj-proxy": "3.0.0",
     "memoize-one": "5.0.4",
     "prop-types": "15.7.2",
     "react": "^16.8.6",
@@ -48,8 +49,8 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
-      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/idObjProxy.js",
+      "\\.(css|less)$": "<rootDir>/__mocks__/idObjProxy.js"
     },
     "verbose": true
   },
