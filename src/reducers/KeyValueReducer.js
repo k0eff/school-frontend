@@ -7,8 +7,7 @@ import {
   KEYVALUE_START_SIGNAL,
   KEYVALUE_ADD_SUCCESS,
   KEYVALUE_ADD_ERROR,
-  KEYVALUE_ADD_LOADING,
-  EDUPLAN_ADD_EDUPLAN
+  KEYVALUE_ADD_LOADING
 } from "../actions/actionTypes";
 
 import isEmpty from "../utils/is-empty";
