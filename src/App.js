@@ -6,7 +6,7 @@ import "./App.css";
 
 //pages
 import Dashboard from "./pages/dashboard/Dashboard";
-import Blank from "./pages/blank/Blank";
+import Blank from "./pages/blank/blank";
 import ListKeyValuePairs from "./pages/KeyValue/ListKeyValuePairs";
 import AddKeyValuePairs from "./pages/KeyValue/AddKeyValuePairs";
 
