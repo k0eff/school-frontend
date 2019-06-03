@@ -12,7 +12,7 @@ export default function Blank() {
 
       <TopBarWrapper>
         <MainBodyContainerWrapper pageTitle="Празно">
-          <p class="m-4">Празна страница</p>
+          <p className="m-4">Празна страница</p>
         </MainBodyContainerWrapper>
       </TopBarWrapper>
     </MainWrapper>

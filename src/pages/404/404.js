@@ -12,7 +12,7 @@ export default function Blank() {
 
       <TopBarWrapper>
         <MainBodyContainerWrapper pageTitle="Грешка 404">
-          <p class="m-4">Страницата не е намерена</p>
+          <p className="m-4">Страницата не е намерена</p>
         </MainBodyContainerWrapper>
       </TopBarWrapper>
     </MainWrapper>
