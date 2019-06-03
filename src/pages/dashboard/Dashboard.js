@@ -12,7 +12,7 @@ export default function Dashboard() {
 
       <TopBarWrapper>
         <MainBodyContainerWrapper pageTitle="Dashboard">
-          <p class="m-4">Добре дошли в началната страница</p>
+          <p className="m-4">Добре дошли в началната страница</p>
         </MainBodyContainerWrapper>
       </TopBarWrapper>
     </MainWrapper>
