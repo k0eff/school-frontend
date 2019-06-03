@@ -6,13 +6,16 @@ const initialState = {};
 
 const middleware = [thunk];
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  compose(
-    applyMiddleware(...middleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-);
+const composeEnhanced = () => {
+  if (process.env.NODE_ENV && process.env.NODE_ENV === "development")
+    return compose(
+      applyMiddleware(...middleware),
+      window.__REDUX_DEVTOOLS_EXTENSION__ && //mount redux devtools only in development server
+        window.__REDUX_DEVTOOLS_EXTENSION__()
+    );
+  else return compose(applyMiddleware(...middleware)); //dont mount redux devtools in jest
+};
+
+const store = createStore(rootReducer, initialState, composeEnhanced());
 
 export default store;
