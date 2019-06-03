@@ -17,6 +17,8 @@ import AddEduPlans from "./pages/eduPlan/AddEduPlans";
 import ListEduPlanData from "./pages/eduPlan/ListEduPlanData";
 import AddEduPlanData from "./pages/eduPlan/AddEduPlanData";
 
+import p404 from "../src/pages/404/404";
+
 function App() {
   return (
     <Provider store={store}>
@@ -43,6 +45,7 @@ function App() {
             path="/eduPlanData/addEdit/:eduPlanId/:eduPlanDataId?"
             component={AddEduPlanData}
           />
+          <Route component={p404} />
         </Switch>
       </BrowserRouter>
     </Provider>
