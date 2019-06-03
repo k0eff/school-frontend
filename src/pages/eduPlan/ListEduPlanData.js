@@ -8,9 +8,6 @@ import isEmpty from "../../utils/is-empty";
 
 // load custom components
 import MainBodyContainerWrapper from "../../components/wrappers/mainBodyContainerWrapper";
-import MainWrapper from "../../components/wrappers/mainWrapper";
-import Menu from "../../components/menu/menu";
-import TopBarWrapper from "../../components/wrappers/topBarWrapper";
 import TableData from "../../components/TableData/tableData";
 import TableNav from "../../components/TableData/tableNav";
 import TableSearch from "../../components/TableData/tableSearch";
