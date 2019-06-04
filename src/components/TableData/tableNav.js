@@ -1,7 +1,7 @@
 import React from "react";
 
 import PropTypes from "prop-types";
-import TableNavElement from "./TableNavElement";
+import TableNavElement from "./tableNavElement";
 
 import isEmpty from "../../utils/is-empty";
 
