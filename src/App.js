@@ -26,6 +26,9 @@ import MainWrapper from "./components/wrappers/mainWrapper";
 function App() {
   return (
     <AppStructure>
+              <MainWrapper>
+          <Menu />
+          <TopBarWrapper>
       <Switch>
         <Route exact path="/" component={Dashboard} />
         <Route path="/blank" component={Blank} />
@@ -50,6 +53,9 @@ function App() {
         />
         <Route component={p404} />
       </Switch>
+      
+      </TopBarWrapper>
+      </MainWrapper>
     </AppStructure>
   );
 }
