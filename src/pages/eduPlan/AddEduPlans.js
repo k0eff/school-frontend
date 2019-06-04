@@ -155,7 +155,7 @@ class AddEduPlans extends Component {
   getEduPlanSingle = () => {
     let eduPlanId = this.getEduPlanId();
     let eduPlanSingle;
-    if (!isEmpty(this.props.eduPlan.single)) {
+    if (!isEmpty(this.props.eduPlan.single.eduPlan)) {
       eduPlanSingle = this.props.eduPlan.single.eduPlan.find(item => {
         return item._id === eduPlanId;
       });
