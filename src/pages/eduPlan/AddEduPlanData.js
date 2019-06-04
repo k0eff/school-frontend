@@ -13,9 +13,6 @@ import isEmpty from "../../utils/is-empty";
 
 // load custom components
 import MainBodyContainerWrapper from "../../components/wrappers/mainBodyContainerWrapper";
-import MainWrapper from "../../components/wrappers/mainWrapper";
-import Menu from "../../components/menu/menu";
-import TopBarWrapper from "../../components/wrappers/topBarWrapper";
 
 import ActionButton from "../../components/common/ActionButton/ActionButton";
 import CommonInput from "../../components/common/CommonInput/CommonInput";
@@ -213,103 +210,95 @@ class AddEduPlanData extends Component {
     }
 
     return (
-      <MainWrapper>
-        <Menu />
+      <MainBodyContainerWrapper pageTitle="Учебни планове">
+        <p className="m-4">
+          {eduPlanId ? "Редакция" : "Добавяне"} на учебен план
+        </p>
+        <div className="p-5">
+          <form
+            onSubmit={e => {
+              this.handleSubmit(e);
+            }}
+          >
+            <div className="form-group w-25">
+              <div className="form-group">
+                {!isEmpty(this.props.eduPlan.single.errors) ? (
+                  <div className="alert bg-gradient-warning text-gray-700">
+                    Избраният учебен план не съществува. <br />
+                    Ще бъде добавен нов с въведените данни.
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
 
-        <TopBarWrapper>
-          <MainBodyContainerWrapper pageTitle="Учебни планове">
-            <p className="m-4">
-              {eduPlanId ? "Редакция" : "Добавяне"} на учебен план
-            </p>
-            <div className="p-5">
-              <form
-                onSubmit={e => {
-                  this.handleSubmit(e);
-                }}
-              >
-                <div className="form-group w-25">
-                  <div className="form-group">
-                    {!isEmpty(this.props.eduPlan.single.errors) ? (
-                      <div className="alert bg-gradient-warning text-gray-700">
-                        Избраният учебен план не съществува. <br />
-                        Ще бъде добавен нов с въведените данни.
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </div>
+              <div className="form-group mt-2">
+                <span>Клас номер</span>
+                <Select
+                  options={classNumberOptions}
+                  placeholder="Избери..."
+                  onChange={value =>
+                    this.handleSelectChange(value, "classNumber")
+                  }
+                  value={classNumber}
+                />
+                {formError && formError.classNumber ? (
+                  <div className="text-danger">{formError.classNumber}</div>
+                ) : (
+                  ""
+                )}
+              </div>
+              <div className="form-group mt-2">
+                <span>Предмет</span>
+                <Select
+                  options={subjectOptions}
+                  placeholder="Избери..."
+                  onChange={value => this.handleSelectChange(value, "subject")}
+                  required="true"
+                  value={subject}
+                />
+                {formError && formError.subject ? (
+                  <div className="text-danger">{formError.subject}</div>
+                ) : (
+                  ""
+                )}
+              </div>
+              <div className="form-group mt-2">
+                <CommonInput
+                  placeholder="Брой часове*"
+                  name="classHours"
+                  onChange={this.handleChange.bind(this)}
+                  error={
+                    formError && formError.classHours
+                      ? formError.classHours
+                      : ""
+                  }
+                  pattern="[0-9]+"
+                  title="Полето трябва да съдържа само цифри и поне 1 цифра"
+                  value={this.state.classHours}
+                />
+              </div>
 
-                  <div className="form-group mt-2">
-                    <span>Клас номер</span>
-                    <Select
-                      options={classNumberOptions}
-                      placeholder="Избери..."
-                      onChange={value =>
-                        this.handleSelectChange(value, "classNumber")
-                      }
-                      value={classNumber}
-                    />
-                    {formError && formError.classNumber ? (
-                      <div className="text-danger">{formError.classNumber}</div>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                  <div className="form-group mt-2">
-                    <span>Предмет</span>
-                    <Select
-                      options={subjectOptions}
-                      placeholder="Избери..."
-                      onChange={value =>
-                        this.handleSelectChange(value, "subject")
-                      }
-                      required="true"
-                      value={subject}
-                    />
-                    {formError && formError.subject ? (
-                      <div className="text-danger">{formError.subject}</div>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                  <div className="form-group mt-2">
-                    <CommonInput
-                      placeholder="Брой часове*"
-                      name="classHours"
-                      onChange={this.handleChange.bind(this)}
-                      error={
-                        formError && formError.classHours
-                          ? formError.classHours
-                          : ""
-                      }
-                      pattern="[0-9]+"
-                      title="Полето трябва да съдържа само цифри и поне 1 цифра"
-                      value={this.state.classHours}
-                    />
-                  </div>
+              <CommonFormErrorMsg
+                error={
+                  error && error.error && typeof error.error === "string"
+                    ? error.error
+                    : ""
+                }
+              />
 
-                  <CommonFormErrorMsg
-                    error={
-                      error && error.error && typeof error.error === "string"
-                        ? error.error
-                        : ""
-                    }
-                  />
-
-                  <div className="form-element">
-                    <ActionButton
-                      text="Запиши"
-                      type="submit"
-                      loading={loading}
-                      success={success}
-                    />
-                  </div>
-                </div>
-              </form>
+              <div className="form-element">
+                <ActionButton
+                  text="Запиши"
+                  type="submit"
+                  loading={loading}
+                  success={success}
+                />
+              </div>
             </div>
-          </MainBodyContainerWrapper>
-        </TopBarWrapper>
-      </MainWrapper>
+          </form>
+        </div>
+      </MainBodyContainerWrapper>
     );
   }
 }

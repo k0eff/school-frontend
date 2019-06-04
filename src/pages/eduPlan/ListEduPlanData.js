@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import memoize from "memoize-one";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -8,9 +8,6 @@ import isEmpty from "../../utils/is-empty";
 
 // load custom components
 import MainBodyContainerWrapper from "../../components/wrappers/mainBodyContainerWrapper";
-import MainWrapper from "../../components/wrappers/mainWrapper";
-import Menu from "../../components/menu/menu";
-import TopBarWrapper from "../../components/wrappers/topBarWrapper";
 import TableData from "../../components/TableData/tableData";
 import TableNav from "../../components/TableData/tableNav";
 import TableSearch from "../../components/TableData/tableSearch";
@@ -124,9 +121,8 @@ class EduPlanData extends Component {
 
   componentDidMount() {
     let eduPlanId = this.getEduPlanId();
- 
-      this.props.getEduPlanDataByEduPlanId(eduPlanId); //load the data
- 
+
+    this.props.getEduPlanDataByEduPlanId(eduPlanId); //load the data
   }
 
   render = () => {
@@ -152,51 +148,47 @@ class EduPlanData extends Component {
     data = paginationData.data;
 
     return (
-      <MainWrapper>
-        <Menu />
+      <Fragment>
+        <MainBodyContainerWrapper
+          pageTitle={this.pageTitle ? this.pageTitle.title : ""}
+        >
+          <p className="m-4">{this.pageTitle ? this.pageTitle.descr : ""}</p>
+          <CommonCard
+            linkText="Добави"
+            link={"/eduPlanData/addEdit/" + eduPlanId}
+            borderLeftClass="border-left-warning"
+          />
+        </MainBodyContainerWrapper>
 
-        <TopBarWrapper>
-          <MainBodyContainerWrapper
-            pageTitle={this.pageTitle ? this.pageTitle.title : ""}
-          >
-            <p className="m-4">{this.pageTitle ? this.pageTitle.descr : ""}</p>
-            <CommonCard
-              linkText="Добави"
-              link={"/eduPlanData/addEdit/" + eduPlanId}
-              borderLeftClass="border-left-warning"
+        <div className="card shadow mb-4">
+          <TableSearch />
+          <div className="card-body">
+            <TableNav
+              meta={meta}
+              handlePageNumChange={this.handlePageNumChange.bind(this)}
             />
-          </MainBodyContainerWrapper>
-
-          <div className="card shadow mb-4">
-            <TableSearch />
-            <div className="card-body">
-              <TableNav
-                meta={meta}
-                handlePageNumChange={this.handlePageNumChange.bind(this)}
-              />
-              <div className="table-responsive">
-                <div
-                  id="dataTable_wrapper"
-                  className="dataTables_wrapper dt-bootstrap4"
-                  style={{ marginRight: "20px" }}
-                >
-                  <div className="row">
-                    <div className="col-sm-12">
-                      <TableData
-                        data={data}
-                        headers={this.tableHeaders}
-                        errors={this.props.eduPlan.errors}
-                        signal={this.props.eduPlan.signal}
-                        loading={this.props.eduPlan.loading}
-                      />
-                    </div>
+            <div className="table-responsive">
+              <div
+                id="dataTable_wrapper"
+                className="dataTables_wrapper dt-bootstrap4"
+                style={{ marginRight: "20px" }}
+              >
+                <div className="row">
+                  <div className="col-sm-12">
+                    <TableData
+                      data={data}
+                      headers={this.tableHeaders}
+                      errors={this.props.eduPlan.errors}
+                      signal={this.props.eduPlan.signal}
+                      loading={this.props.eduPlan.loading}
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </TopBarWrapper>
-      </MainWrapper>
+        </div>
+      </Fragment>
     );
   };
 }

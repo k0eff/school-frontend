@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 function tableNavElement(props) {
-  let { disabled, status, linkWithoutNumber, linkText, pageNumber } = props;
+  let { disabled, status, linkText, pageNumber } = props;
 
   let liClassName = "paginate_button page-item ";
   liClassName += status;

@@ -11,14 +11,10 @@ import isEmpty from "../../utils/is-empty";
 
 // load custom components
 import MainBodyContainerWrapper from "../../components/wrappers/mainBodyContainerWrapper";
-import MainWrapper from "../../components/wrappers/mainWrapper";
-import Menu from "../../components/menu/menu";
-import TopBarWrapper from "../../components/wrappers/topBarWrapper";
 
 import ActionButton from "../../components/common/ActionButton/ActionButton";
 import CommonInput from "../../components/common/CommonInput/CommonInput";
 import CommonTextArea from "../../components/common/CommonTextArea/CommonTextArea";
-import CommonCard from "../../components/common/CommonCard/CommonCard";
 import CommonFormErrorMsg from "../../components/common/CommonFormErrorMsg/CommonFormErrorMsg";
 
 class AddKeyValuePairs extends Component {
@@ -103,72 +99,64 @@ class AddKeyValuePairs extends Component {
     }
 
     return (
-      <MainWrapper>
-        <Menu />
-
-        <TopBarWrapper>
-          <MainBodyContainerWrapper
-            pageTitle={
-              this.pageTitles[paramName] ? this.pageTitles[paramName].title : ""
-            }
+      <MainBodyContainerWrapper
+        pageTitle={
+          this.pageTitles[paramName] ? this.pageTitles[paramName].title : ""
+        }
+      >
+        <p className="m-4">
+          {this.pageTitles[paramName] ? this.pageTitles[paramName].descr : ""}
+        </p>
+        <div className="p-5">
+          <form
+            onSubmit={e => {
+              this.handleSubmit(e);
+            }}
           >
-            <p className="m-4">
-              {this.pageTitles[paramName]
-                ? this.pageTitles[paramName].descr
-                : ""}
-            </p>
-            <div className="p-5">
-              <form
-                onSubmit={e => {
-                  this.handleSubmit(e);
-                }}
-              >
-                <div className="form-group">
-                  <CommonInput
-                    placeholder="Име*"
-                    name="paramValue"
-                    onChange={e => this.handleChange(e)}
-                    error={error && error.value ? error.value : ""}
-                    required={true}
-                    pattern=".+"
-                    title="Полето трябва да съдържа поне 1 символ"
-                    value={this.state.paramValue}
-                  />
-                  <div className="form-group mt-2">
-                    <CommonTextArea
-                      placeholder="Кратко описание*"
-                      name="paramDescr"
-                      onChange={e => this.handleChange(e)}
-                      error={error && error.descr ? error.value : ""}
-                      required={true}
-                      pattern=".+"
-                      title="Полето трябва да съдържа поне 1 символ"
-                      value={this.state.paramDescr}
-                    />
-                  </div>
+            <div className="form-group">
+              <CommonInput
+                placeholder="Име*"
+                name="paramValue"
+                onChange={e => this.handleChange(e)}
+                error={error && error.value ? error.value : ""}
+                required={true}
+                pattern=".+"
+                title="Полето трябва да съдържа поне 1 символ"
+                value={this.state.paramValue}
+              />
+              <div className="form-group mt-2">
+                <CommonTextArea
+                  placeholder="Кратко описание*"
+                  name="paramDescr"
+                  onChange={e => this.handleChange(e)}
+                  error={error && error.descr ? error.value : ""}
+                  required={true}
+                  pattern=".+"
+                  title="Полето трябва да съдържа поне 1 символ"
+                  value={this.state.paramDescr}
+                />
+              </div>
 
-                  <CommonFormErrorMsg
-                    error={
-                      error && error.error && typeof error.error === "string"
-                        ? error.error
-                        : ""
-                    }
-                  />
+              <CommonFormErrorMsg
+                error={
+                  error && error.error && typeof error.error === "string"
+                    ? error.error
+                    : ""
+                }
+              />
 
-                  <div className="form-element">
-                    <ActionButton
-                      text="Запиши"
-                      type="submit"
-                      loading={loading}
-                      success={success}
-                    />
-                  </div>
-                </div>
-              </form>
+              <div className="form-element">
+                <ActionButton
+                  text="Запиши"
+                  type="submit"
+                  loading={loading}
+                  success={success}
+                />
+              </div>
             </div>
-          </MainBodyContainerWrapper>
-        </TopBarWrapper>
-      </MainWrapper>
+          </form>
+        </div>
+      </MainBodyContainerWrapper>
     );
   }
 }

@@ -7,6 +7,7 @@
 
 const evaluateStrLiteral = (str, data, accessFn = false) =>
   str.replace(
+    // eslint-disable-next-line no-useless-escape
     /\$\(\s*([^\s\)]+)\s*\)/g, //replace strings
     (_, capturedIdentifier) => {
       if (!accessFn) {
