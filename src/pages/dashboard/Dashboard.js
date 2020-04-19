@@ -7,14 +7,10 @@ import MainWrapper from "../../components/wrappers/mainWrapper";
 
 export default function Dashboard() {
   return (
-    <MainWrapper>
-      <Menu />
 
-      <TopBarWrapper>
         <MainBodyContainerWrapper pageTitle="Dashboard">
           <p className="m-4">Добре дошли в началната страница</p>
         </MainBodyContainerWrapper>
-      </TopBarWrapper>
-    </MainWrapper>
+
   );
 }

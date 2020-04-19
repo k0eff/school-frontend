@@ -7,14 +7,8 @@ import MainWrapper from "../../components/wrappers/mainWrapper";
 
 export default function Blank() {
   return (
-    <MainWrapper>
-      <Menu />
-
-      <TopBarWrapper>
         <MainBodyContainerWrapper pageTitle="Празно">
           <p className="m-4">Празна страница</p>
         </MainBodyContainerWrapper>
-      </TopBarWrapper>
-    </MainWrapper>
   );
 }
